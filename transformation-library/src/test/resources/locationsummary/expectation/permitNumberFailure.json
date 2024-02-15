@@ -1,0 +1,45 @@
+{
+  "responseHeader": {
+    "trackingId": "39f14ace-1d22-43d1-9c19-e77c6f9ff912",
+    "transactionId": "01eadbe5-dbf7-47ba-9d56-7f446c8c1ad3",
+    "sessionId": "59e8f479547d4a6fab1106773fd9b"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "2cca4e23-e419-4372-bc54-b22718183c72",
+    "acknowledgeTypeCode": "AE",
+    "acknowledgementDetails": [
+      {
+        "typeCode": "E",
+        "code": "SYN102",
+        "text": "Data type error",
+        "location": "PRLO_IN202010CAQC_V01/controlActEvent/queryByParameter/parameterList/address/value/postalCode"
+      }
+    ]
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "QE",
+    "resultCurrentQuantity": "0",
+    "resultTotalQuantity": "0",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "VPHXApplicationOID",
+    "eventCorrelationId": "11111111",
+    "provincialLocationSearchCriteria": {
+      "locationName": "string",
+      "provincialLocationIdentifierValue": "213123213",
+      "locationType": "HOSP",
+      "provincialLocationIdentifierType": "PERMIT_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": "string",
+        "postalCode": "string",
+        "city": "string",
+        "country": "string"
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": []
+  }
+}

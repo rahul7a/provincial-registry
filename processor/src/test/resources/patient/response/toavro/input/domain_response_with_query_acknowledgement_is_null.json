@@ -1,0 +1,61 @@
+{
+  "responseHeader": {
+    "transactionId": "6e088f3d-676e-467d-8378-d9dcdd0fb4ed",
+    "sessionId": "046819532daf4f498e181e0572771",
+    "trackingId": "21b754ce-5a18-4da4-b871-9b6a9beae7d0"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "945a2e09-6a6f-4a6a-b41c-e60e8319b1ae",
+    "acknowledgeTypeCode": "AA",
+    "acknowledgementDetails": null
+  },
+  "responseControlAct": {
+    "eventRoot": "VPHXApplicationOID",
+    "eventCorrelationId": "99999999999000000000000",
+    "provincialPatientSearchCriteria": {
+      "provincialHealthNumber": "provincialHealthNumberInCriteria",
+      "firstName": null,
+      "lastName": null,
+      "dateOfBirth": null,
+      "motherFirstName": null,
+      "motherLastName": null,
+      "fatherFirstName": null,
+      "fatherLastName": null,
+      "address": {
+        "streetAddressLine": "streetAddressLine",
+        "city": null,
+        "province": null,
+        "country": null,
+        "postalCode": null
+      },
+      "gender": null
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialResponseAcknowledgement": {},
+    "firstName": null,
+    "lastName": null,
+    "dateOfBirth": null,
+    "motherFirstName": null,
+    "motherLastName": null,
+    "fatherFirstName": null,
+    "fatherLastName": null,
+    "deceasedDate": null,
+    "matchingIndex": 100,
+    "identifier": null,
+    "provincialHealthNumber": null,
+    "address": {
+      "streetAddressLine": "streetAddressLine",
+      "city": null,
+      "province": null,
+      "country": null,
+      "postalCode": null
+    },
+    "gender": null
+  },
+  "queryAcknowledgement": null,
+  "detectedIssue": {
+    "eventCode": "MISSMAND",
+    "eventText": "Les critères de recherche de base n'ont pas été saisis. Ces critères sont: le NIU seul, le NAM seul ou dans un ensemble, le nom, le prénom, la date de naissance et le sexe de l'individu."
+  }
+}

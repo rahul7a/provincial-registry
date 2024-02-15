@@ -1,0 +1,125 @@
+%TEMPLATE_MODE XML
+# ------------ separator comment -----------
+%NAME Find Candidate Query Request
+# ------------------------------------------
+%CONTEXT
+phmsRequest = new com.lblw.vphx.phms.domain.patient.request.hl7v3.ProvincialPatientSearchRequest()
+phmsRequest.requestBodyTransmissionWrapper = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestBodyTransmissionWrapper()
+phmsRequest.requestBodyTransmissionWrapper.transmissionUniqueIdentifier = 'ABC123'
+phmsRequest.requestBodyTransmissionWrapper.transmissionCreationDateTime = '2021-08-04T00:00:00'
+phmsRequest.requestBodyTransmissionWrapper.processingCode = 'code'
+phmsRequest.requestBodyTransmissionWrapper.senderRoot = 'sender-root'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationId = 'sender-application-id'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationName = 'sender-application-name'
+phmsRequest.requestControlAct = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestControlAct()
+phmsRequest.requestControlAct.eventRoot = 'event-root'
+phmsRequest.requestControlAct.eventCorrelationId = 'event-ext'
+phmsRequest.provincialRequestPayload = new com.lblw.vphx.phms.domain.patient.request.ProvincialPatientSearchCriteria()
+phmsRequest.provincialRequestPayload.provincialHealthNumber = 'healthnum'
+phmsRequest.provincialRequestPayload.patientIdentifier = 'identifier'
+phmsRequest.provincialRequestPayload.firstName = 'john'
+phmsRequest.provincialRequestPayload.lastName = 'patrick'
+phmsRequest.provincialRequestPayload.motherFirstName = 'jenny'
+phmsRequest.provincialRequestPayload.motherLastName = 'phillips'
+phmsRequest.provincialRequestPayload.fatherFirstName = 'james'
+phmsRequest.provincialRequestPayload.fatherLastName = 'patrick'
+phmsRequest.provincialRequestPayload.dateOfBirth =  @java.time.LocalDate@of(1980,04,04)
+phmsRequest.provincialRequestPayload.gender = @com.lblw.vphx.phms.domain.common.Gender@M
+phmsRequest.provincialRequestPayload.address = new com.lblw.vphx.phms.domain.common.Address()
+phmsRequest.provincialRequestPayload.address.streetAddressLine = '123 Fake St'
+phmsRequest.provincialRequestPayload.address.city = 'Montreal'
+phmsRequest.provincialRequestPayload.address.province = 'QC'
+phmsRequest.provincialRequestPayload.address.country = 'CA'
+phmsRequest.provincialRequestPayload.address.postalCode = 'HBE 123'
+formattedDateOfBirth=19800404
+# ------------------------------------------
+%MESSAGES
+# ------------------------------------------
+%INPUT (file:src/main/resources/templates/qc/PATIENT_SEARCH-request.xml)
+# ------------------------------------------
+%OUTPUT
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security soapenv:actor="IntervenantEmetteur"
+                  xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"/>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRPA_IN101103CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0">
+            <!-- ******* Beginning of Transport Wrapper ******* -->
+            <id root="ABC123"/>
+            <creationTime value="2021-08-04T00:00:00"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.110" extension="PRPA_IN101103CA" displayable="true"/>
+            <processingCode code="code"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="sender-root" extension="sender-application-id"
+                        use="BUS"/>
+                    <name representation="TXT" mediaType="text/plain">sender-application-name</name>
+                </device>
+            </sender>
+            <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+            <controlActEvent classCode="CACT" moodCode="EVN">
+                <id root="event-root" extension="event-ext" use="BUS"/>
+                <code code="PRPA_TE101103CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <!-- ******* Beginning of Payload ******* -->
+                <queryByParameter>
+                    <queryId root="ABC123"/>
+                    <parameterList>
+                        <administrativeGender>
+                            <value code="M"/>
+                        </administrativeGender>
+                        <clientId>
+                            <value root="2.16.840.1.113883.4.56"
+                                   extension="identifier"/>
+                            <value root="2.16.124.10.101.1.60.100"
+                                   extension="healthnum"/>
+                        </clientId>
+                        <personAddress>
+                            <value>
+                                <streetAddressLine representation="TXT" mediaType="text/plain" partType="SAL">123 Fake St</streetAddressLine>
+                                <city representation="TXT" mediaType="text/plain" partType="CTY">Montreal</city>
+                                <state representation="TXT" mediaType="text/plain" partType="STA">QC</state>
+                                <country representation="TXT" mediaType="text/plain" partType="CNT">CA</country>
+                                <postalCode representation="TXT" mediaType="text/plain" partType="ZIP">HBE 123</postalCode>
+                            </value>
+                        </personAddress>
+                        <personBirthtime>
+                            <value value="19800404"/>
+                        </personBirthtime>
+                        <personName>
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV">john</given>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM">patrick</family>
+                            </value>
+                        </personName>
+                        <mothersMaidenName>
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV">jenny</given>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM">phillips</family>
+                            </value>
+                        </mothersMaidenName>
+                        <fathersName>
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV">james</given>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM">patrick</family>
+                            </value>
+                        </fathersName>
+                    </parameterList>
+                </queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+            </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+        </PRPA_IN101103CA>
+    </soapenv:Body>
+</soapenv:Envelope>

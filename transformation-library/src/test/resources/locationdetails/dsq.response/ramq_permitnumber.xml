@@ -1,0 +1,113 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">ac25c1cf-4c57-4954-81d6-0ca050f3676b</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">a4e7c21e-f984-4bf7-b27a-70543128ead0</cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">e00dd624119c403ca060cf1395e13</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRLO_IN202013CAQC_V01 ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <id root="90fec63e-9659-4780-a059-35311f30c097"/>
+      <creationTime value="20211221162049"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.3.18" extension="PRLO_IN202013CAQC_V01" displayable="true"/>
+      <processingCode code="phms"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="senderRoot" extension="senderApplicationId" displayable="true" use="BUS"/>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+          <name>Registre ODS/LDS</name>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+          <id root="5cb212bb-1074-459c-b6aa-05f7b415bf1d"/>
+        </targetMessage>
+      </acknowledgement>
+      <controlActEvent classCode="CACT" moodCode="EVN">
+        <id root="eventRoot" extension="eventCorrelationId" displayable="true" use="BUS"/>
+        <code code="PRLO_TE202013CA"/>
+        <statusCode code="completed"/>
+        <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="true">
+          <registrationRequest classCode="REG" moodCode="RQO">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+              <serviceDeliveryLocation classCode="SDLOC">
+                <id root="2.16.840.1.113883.4.273" extension="1000022499" displayable="true"/>
+                <code code="CPDEN"/>
+                <name>CLINIQUE DENTAIRE EMERILLON</name>
+                <addr use="PHYS">
+                  <streetAddressLine partType="SAL">2886 AV DE LYON</streetAddressLine>
+                  <additionalLocator partType="ADL">LONGUEUIL, QC</additionalLocator>
+                  <city partType="CTY">LONGUEUIL</city>
+                  <postalCode partType="ZIP">J4L3R2</postalCode>
+                </addr>
+                <statusCode code="NI"/>
+                <location classCode="PLC" determinerCode="INSTANCE">
+                  <code code="BLDG"/>
+                  <mobileInd value="false"/>
+                  <asIdentifiedLocation classCode="IDENT">
+                    <id extension="21410" displayable="true"/>
+                    <assigningIdentifierOrganization classCode="ORG" determinerCode="INSTANCE">
+                      <name>RAMQ</name>
+                    </assigningIdentifierOrganization>
+                  </asIdentifiedLocation>
+                </location>
+                <serviceProviderOrganization classCode="ORG" determinerCode="INSTANCE">
+                  <id root="2.16.840.1.113883.4.274" extension="0" displayable="true"/>
+                  <name>null</name>
+                </serviceProviderOrganization>
+                <directAuthorityOver xsi:nil="true"/>
+                <indirectAuthority typeCode="INDAUTH">
+                  <territorialAuthority classCode="TERR">
+                    <id root="2.16.124.10.101.1.60.1.10" extension="16" displayable="true"/>
+                  </territorialAuthority>
+                </indirectAuthority>
+                <partOf xsi:nil="true"/>
+              </serviceDeliveryLocation>
+            </subject>
+            <custodian typeCode="CST" contextControlCode="AP">
+              <assignedDevice classCode="ASSIGNED">
+                <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                  <name>Registre ODS/LDS</name>
+                </assignedRepository>
+                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                  <name>Québec</name>
+                </representedRepositoryJurisdiction>
+              </assignedDevice>
+            </custodian>
+          </registrationRequest>
+        </subject>
+        <queryAck>
+          <queryId root="5cb212bb-1074-459c-b6aa-05f7b415bf1d"/>
+          <queryResponseCode code="OK"/>
+          <resultTotalQuantity value="1"/>
+          <resultCurrentQuantity value="1"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="5cb212bb-1074-459c-b6aa-05f7b415bf1d"/>
+          <parameterList>
+            <recordId>
+              <value root="2.16.840.1.113883.4.273" extension="1000022499" displayable="true"/>
+            </recordId>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRLO_IN202013CAQC_V01>
+  </s:Body>
+</s:Envelope>

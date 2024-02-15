@@ -1,0 +1,142 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">4cc1f939-5498-4fa8-9e92-ad22535a2a3a</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">f7f0a055-1e9f-4ca3-be09-2b5b21062cee
+    </cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">f96ac3679be54a6db4df037006d0c</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRPA_IN101104CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <id root="b3c85bba-4184-466a-b000-43d709bf5b6c"/>
+      <creationTime value="20210909161116"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.5.2.111" extension="PRPA_IN101104CA" displayable="true"/>
+      <processingCode code="D"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.840.1.113883.3.40.5.2" extension="TMPT-RI" use="BUS"/>
+          <agent xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+          <name>Registre des usagers</name>
+          <agent xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+          <id root="2.16.840.1.113883.3.40.1.5"/>
+        </targetMessage>
+      </acknowledgement>
+      <controlActEvent moodCode="EVN">
+        <id root="2.16.840.1.113883.3.40.4.1" extension="564654" use="BUS"/>
+        <code code="PRPA_TE101104CA" codeSystem="2.16.840.1.113883.11.19427"/>
+        <statusCode code="completed"/>
+        <subject typeCode="SUBJ" contextControlCode="ON">
+          <registrationEvent classCode="REG" moodCode="EVN">
+            <statusCode code="active"/>
+            <subject contextControlCode="AN">
+              <identifiedEntity classCode="IDENT">
+                <id root="2.16.840.1.113883.4.56" extension="8000000292" displayable="false"/>
+                <id root="2.16.124.10.101.1.60.100" extension="MICF93560415" displayable="true"/>
+                <statusCode code="active"/>
+                <effectiveTime>
+                  <low value="20210909"/>
+                  <high nullFlavor="NI"/>
+                </effectiveTime>
+                <confidentialityCode code="NI"/>
+                <identifiedPerson classCode="PSN" determinerCode="INSTANCE">
+                  <name>
+                    <given partType="GIV">Flore</given>
+                    <family partType="FAM">Michel</family>
+                  </name>
+                  <telecom nullFlavor="MSK"/>
+                  <administrativeGenderCode code="F"/>
+                  <birthTime value="19930604"/>
+                  <deceasedInd value="false"/>
+                  <deceasedTime nullFlavor="UNK"/>
+                  <multipleBirthInd nullFlavor="UNK"/>
+                  <addr>
+                    <streetAddressLine partType="SAL">4109 avenue Isabella</streetAddressLine>
+                    <city partType="CTY">Montral</city>
+                    <state partType="STA">Qc</state>
+                    <country partType="CNT">CA</country>
+                    <postalCode partType="ZIP">H3T1N5</postalCode>
+                  </addr>
+                  <languageCommunication>
+                    <languageCode nullFlavor="MSK"/>
+                  </languageCommunication>
+                </identifiedPerson>
+                <subjectOf typeCode="SBJ">
+                  <observationEvent classCode="OBS" moodCode="EVN">
+                    <code code="ProbabilityMatchObservation"/>
+                    <value value="0.5990"/>
+                  </observationEvent>
+                </subjectOf>
+              </identifiedEntity>
+            </subject>
+            <custodian typeCode="CST" contextControlCode="AP">
+              <assignedDevice classCode="ASSIGNED">
+                <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                  <name>Registre des usagers</name>
+                </assignedRepository>
+                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                  <name>Québec</name>
+                </representedRepositoryJurisdiction>
+              </assignedDevice>
+            </custodian>
+          </registrationEvent>
+        </subject>
+        <subjectOf typeCode="SUBJ" contextControlCode="AP">
+          <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+            <code code="ECARTMIN"/>
+            <text>Écart mineur</text>
+            <statusCode code="completed"/>
+            <priorityCode code="I"/>
+            <triggerFor xsi:nil="true"/>
+          </detectedIssueEvent>
+        </subjectOf>
+        <queryAck>
+          <queryId root="2.16.840.1.113883.3.40.1.5"/>
+          <queryResponseCode code="OK"/>
+          <resultTotalQuantity value="1"/>
+          <resultCurrentQuantity value="1"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="BB7321A1-3365-44BA-8F7C-AF54EF0F0146"/>
+          <parameterList>
+            <administrativeGender xsi:nil="true"/>
+            <clientId>
+              <value root="2.16.124.10.101.1.60.100" extension="MICF93560415"/>
+            </clientId>
+            <deceasedIndicator xsi:nil="true"/>
+            <deceasedTime xsi:nil="true"/>
+            <languageCode xsi:nil="true"/>
+            <multipleBirthIndicator xsi:nil="true"/>
+            <multipleBirthOrderNumber xsi:nil="true"/>
+            <personBirthtime>
+              <value value="19930604"/>
+            </personBirthtime>
+            <personName>
+              <value>
+                <given partType="GIV">Michel</given>
+                <family partType="FAM">Flore</family>
+              </value>
+            </personName>
+            <personalRelationshipCode xsi:nil="true"/>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRPA_IN101104CA>
+  </s:Body>
+</s:Envelope>

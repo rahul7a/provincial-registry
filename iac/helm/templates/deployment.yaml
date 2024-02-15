@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.app}}
+  namespace: {{ .Values.namespace}}
+  labels:
+    app: {{ .Values.deployment.app}}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.app}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.app}}
+    spec:
+      volumes:
+        - name: truststore-volume
+        {{- if .Values.deployment.appdynamics.enable }}
+        - name: appd-shared-conf
+          emptyDir: { }
+        {{- end }}
+      initContainers:
+        {{- if .Values.deployment.appdynamics.enable }}
+        - name: app-dynamics-agent
+          image: {{ printf "%s/%s:%s" $.Values.deployment.appdynamics.registry $.Values.deployment.appdynamics.repository  $.Values.deployment.appdynamics.tag }}
+          imagePullPolicy: {{ $.Values.deployment.appdynamics.imagePullPolicy | quote }}
+          command: ["/bin/sh"]
+          args: ["-c","cp -a /opt/appdynamics/* {{ $.Values.deployment.appdynamics.confDir }}"]
+          volumeMounts:
+            - name: "appd-shared-conf"
+              mountPath: {{ $.Values.deployment.appdynamics.confDir | quote }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.deployment.app}}
+          image: {{ .Values.deployment.image}}:{{ .Values.deployment.tag}}
+          ports:
+            - containerPort: {{ .Values.deployment.port }}
+          resources:
+            limits:
+              cpu: {{ .Values.deployment.resources.limits.cpu }}
+              memory: {{ .Values.deployment.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.deployment.resources.requests.cpu }}
+              memory: {{ .Values.deployment.resources.requests.memory }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.deployment.app}}-env-configmap
+          {{- if .Values.deployment.appdynamics.enable }}
+          env:
+            #Logging
+            - name: LOBLAW_LOG_LEVEL
+              value: DEBUG
+            #Java
+            - name: JAVA_TOOL_OPTIONS
+              value: -javaagent:{{ $.Values.deployment.appdynamics.confDir }}/javaagent.jar -Dappdynamics.jvm.shutdown.mark.node.as.historical=true -Xms1024m -Xmx1536m -XX:+UseG1GC
+            #Appdynamics
+            - name: APPDYNAMICS_AGENT_APPLICATION_NAME
+              value: {{ .Values.deployment.appdynamics.appName }}
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: {{ $.Values.deployment.app | quote }}
+            - name: APPDYNAMICS_AGENT_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: APPDYNAMICS_UNIQUE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+              value: {{ .Values.deployment.appdynamics.account | quote}}
+            - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.deployment.app}}-appd-secret
+                  key: access-key
+            - name: APPDYNAMICS_CONTROLLER_HOST_NAME
+              value: {{ .Values.deployment.appdynamics.host | quote}}
+            - name: APPDYNAMICS_CONTROLLER_PORT
+              value: {{ .Values.deployment.appdynamics.port | quote}}
+            - name: APPDYNAMICS_CONTROLLER_SSL_ENABLED
+              value: {{ .Values.deployment.appdynamics.ssl | quote}}
+          {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /{{ .Values.envMap.SPRING_PROFILES_ACTIVE }}/phms/actuator/health/readiness
+              port: {{ .Values.deployment.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /{{ .Values.envMap.SPRING_PROFILES_ACTIVE }}/phms/actuator/health/liveness
+              port: {{ .Values.deployment.port }}
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 5
+          volumeMounts:
+            - mountPath: /truststore
+              name: truststore-volume
+              readOnly: true
+          {{- if .Values.deployment.appdynamics.enable }}
+            - name: "appd-shared-conf"
+              mountPath: {{ $.Values.deployment.appdynamics.confDir | quote }}
+          {{- end }}
+      serviceAccountName: {{ .Values.deployment.serviceAccountName}}
+

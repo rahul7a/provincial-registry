@@ -1,0 +1,18 @@
+-1,1123465789,N,0,QC,1234567890,streetLineAddress,streetAddressLine2,city,country,postalCode
+0,PI,N,,QC,1234567890,,streetAddressLine2,,country,
+1,,N,,QC,,,streetAddressLine2,,country,
+2,PI,,,QC,1234567890,,streetAddressLine2,,country,
+3,,,,QC,,,streetAddressLine2,,country,
+4,PI,N,0,QC,1234567890,streetLineAddress should be more than 80 charecters we need to trim it 77 charecters,streetAddressLine2,city,country,postalCode
+5,PI,N,,ON,,,streetAddressLine2,,country,
+6,,N,,ON,1234567890,,streetAddressLine2,,country,
+7,PI,,,ON,,,streetAddressLine2,,country,
+8,,,,ON,1234567890,,streetAddressLine2,,country,
+9,PI,N,0,ON,1234567890,,streetAddressLine2,,country,
+10,PI,N,0,QC,,streetLineAddress,streetAddressLine2,city,country,postalCode
+11,PI,N,12345,QC,1234567890,streetLineAddress,streetAddressLine2,,country,
+12,PI,N,12345,QC,1234567890,,streetAddressLine2,city,country,
+13,PI,N,12345,QC,1234567890,,streetAddressLine2,,country,postalCode
+14,PI,N,12345,QC,1234567890,streetLineAddress,streetAddressLine2,city,country,
+15,PI,N,12345,QC,1234567890,streetLineAddress,streetAddressLine2,,country,postalCode
+16,PI,N,12345,QC,1234567890,,streetAddressLine2,city,country,postalCode

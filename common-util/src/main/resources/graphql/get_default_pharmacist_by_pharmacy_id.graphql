@@ -1,0 +1,22 @@
+query StoreGetDefaultPharmacist($pharmacyId: String!) {
+  storeGetDefaultPharmacist(pharmacyId: $pharmacyId) {
+    firstName
+    lastName
+    idpUserId
+    licenceNumber
+    licenceProvince
+    provincialProvider {
+          mainPlaceIndicator
+          providerRole {
+            code
+          }
+          identifier {
+            type
+            value
+            assigner
+            system
+          }
+    }
+    state
+  }
+}

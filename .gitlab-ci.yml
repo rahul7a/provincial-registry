@@ -1,0 +1,22 @@
+# VPHX CICD pipeline based on Devops Catalog
+#
+variables:
+  CLUSTER_NAME: banting
+  CLUSTER_PROJECT: lt-sre-shipyard
+  CLUSTER_REGION: northamerica-northeast1
+  GAR_PROJECT_ID: vph-artifacts
+  GAR_PROJECT_ZONE: northamerica-northeast1
+  GAR_DOCKER_REPO_NAME: vph-phms
+  GAR_DOCKER_ARTIFACT_NAME: phms-provincial-registry-service
+  KUBERNETES_DEPLOYMENT_NAMESPACE_LWR: vph-phms-lwr
+  KUBERNETES_DEPLOYMENT_NAMESPACE_PREPRD: vph-phms-preprd
+  KUBERNETES_DEPLOYMENT_NAMESPACE_PRD: vph-phms-prd
+  SERVICE_NAME: vph-phms-provincial-registry-service
+  HELM_CHART_PATH: iac/helm
+  ENABLE_VERACODE_SCAN: "true"
+
+include:
+  - project: 'health-watch/domains/devops/devopscatalog'
+    ref: 'master'
+    file: 'workflows/maven/.workflow-stateless-maven-vphx.yml'
+

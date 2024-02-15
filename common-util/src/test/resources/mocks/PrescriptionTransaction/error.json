@@ -1,0 +1,151 @@
+{
+  "errors": [
+    {
+      "message": "403: Forbidden",
+      "locations": [
+        {
+          "line": 41,
+          "column": 7
+        }
+      ],
+      "path": [
+        "prescriptionTransaction",
+        "prescription",
+        "prescriber"
+      ],
+      "extensions": {
+        "code": "FORBIDDEN",
+        "response": {
+          "url": "https://vph-prescriber-service-dev.banting.lblw.cloud/prescriber/62b1d7a4289f843ce3aa0bf4",
+          "status": 403,
+          "statusText": "Forbidden",
+          "body": ""
+        },
+        "exception": {
+          "stacktrace": [
+            "ForbiddenError: 403: Forbidden",
+            "    at PrescriberApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:82:25)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)",
+            "    at __awaiter (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:4:12)",
+            "    at PrescriberApi.errorFromResponse (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:75:16)",
+            "    at PrescriberApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:53:34)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)"
+          ]
+        }
+      }
+    },
+    {
+      "message": "403: Forbidden",
+      "locations": [
+        {
+          "line": 66,
+          "column": 5
+        }
+      ],
+      "path": [
+        "prescriptionTransaction",
+        "drug"
+      ],
+      "extensions": {
+        "code": "FORBIDDEN",
+        "response": {
+          "url": "https://vph-drug-service-dev.banting.lblw.cloud/drugs/drugProducts/62e017ec28ec0a0cdcb26448",
+          "status": 403,
+          "statusText": "Forbidden",
+          "body": ""
+        },
+        "exception": {
+          "stacktrace": [
+            "ForbiddenError: 403: Forbidden",
+            "    at DrugApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:82:25)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)",
+            "    at __awaiter (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:4:12)",
+            "    at DrugApi.errorFromResponse (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:75:16)",
+            "    at DrugApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:53:34)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)"
+          ]
+        }
+      }
+    }
+  ],
+  "data": {
+    "prescriptionTransaction": {
+      "systemIdentifier": "62ffdea0e4964d4698cd8fa9",
+      "pharmacyId": "97656",
+      "supplyDays": "30",
+      "intervalDays": "10",
+      "txNumber": "10000014",
+      "serviceDate": "2022-08-19",
+      "dispensedQuantity": "15",
+      "prescription": {
+        "systemIdentifier": "62ffdea0e4964d4698cd8faa",
+        "patientId": "62a8eac2149966705c577d47",
+        "rxNumber": "9000087",
+        "refillUntilDate": "2022-09-30",
+        "expiryDate": "2024-08-19",
+        "refills": "2",
+        "rxSource": "WRITTEN",
+        "totalAuthorizedQuantity": "90",
+        "workflowType": "SUBMIT",
+        "unit": "MG",
+        "writtenDate": "2022-08-19",
+        "prescribedQuantity": "30",
+        "createdBy": null,
+        "pharmacyDetail": null,
+        "sig": {
+          "code": [
+            "Take",
+            "as",
+            "needed"
+          ],
+          "defaultSigFlag": false,
+          "language": "en"
+        },
+        "routeOfAdministration": "OR",
+        "prescriberMetaData": {
+          "prescriberId": "62b1d7a4289f843ce3aa0bf4",
+          "prescriberProvincialLocationIdentifier": "",
+          "prescriberProvincialName": ""
+        },
+        "prescriber": null
+      },
+      "patient": {
+        "patientType": 1,
+        "human": {
+          "firstName": "Flore",
+          "lastName": "Michel",
+          "provincialIdentifier": "8000000292"
+        },
+        "id": "62a8eac2149966705c577d47"
+      },
+      "drug": null,
+      "compoundDrug": null,
+      "medication": {
+        "din": "02237726",
+        "systemIdentifier": "62e017ec28ec0a0cdcb26448",
+        "tradeName": "Asprin",
+        "productType": "DRG",
+        "legalStatus": "G",
+        "source": "1",
+        "category": "AS_NEEDED",
+        "therapeuticIndication": [
+          {
+            "systemIdentifier": "62ffdf16e4964d4698cd8fac",
+            "cdcoId": "8070000",
+            "source": "1",
+            "therapeuticObjective": null
+          }
+        ],
+        "form": null
+      }
+    }
+  }
+}

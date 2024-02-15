@@ -1,0 +1,154 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">c2e341cb-75a8-4299-a53a-2fe4b0e2e7f9</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">f0182eaa-ffa4-4621-ac84-0ae785e78f8a
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">415366c294b34df6b8b9dc8fda4e7</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <PRPA_IN101104CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="cebb6ec9-84c3-4831-bcf2-18e84928a355"/>
+            <creationTime value="20210930183514"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.111" extension="PRPA_IN101104CA" displayable="true"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="VPHXApplicationOID" extension="VPHXApplicationShortName" use="BUS"/>
+                    <agent xsi:nil="true"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                    <name>Registre des usagers</name>
+                    <agent xsi:nil="true"/>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AA"/>
+                <targetMessage>
+                    <id root="e66d871e-e906-4873-a378-5c91d64137a1"/>
+                </targetMessage>
+            </acknowledgement>
+            <controlActEvent moodCode="EVN">
+                <id root="VPHXApplicationOID" extension="12376766" use="BUS"/>
+                <code code="PRPA_TE101104CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <subject typeCode="SUBJ" contextControlCode="ON">
+                    <registrationEvent classCode="REG" moodCode="EVN">
+                        <statusCode code="active"/>
+                        <subject contextControlCode="AN">
+                            <identifiedEntity classCode="IDENT">
+                                <id root="2.16.840.1.113883.4.56" extension="8000000433" displayable="false"/>
+                                <id root="2.16.124.10.101.1.60.100" extension="ARMC80541517" displayable="true"/>
+                                <statusCode code="active"/>
+                                <effectiveTime>
+                                    <low value="20210930"/>
+                                    <high nullFlavor="NI"/>
+                                </effectiveTime>
+                                <confidentialityCode code="NI"/>
+                                <identifiedPerson classCode="PSN" determinerCode="INSTANCE">
+                                    <name>
+                                        <given partType="GIV">Camlia</given>
+                                        <family partType="FAM">Armand</family>
+                                    </name>
+                                    <telecom nullFlavor="MSK"/>
+                                    <administrativeGenderCode code="F"/>
+                                    <birthTime value="19800415"/>
+                                    <deceasedInd value="false"/>
+                                    <deceasedTime nullFlavor="UNK"/>
+                                    <multipleBirthInd nullFlavor="UNK"/>
+                                    <addr>
+                                        <streetAddressLine partType="SAL">103-255 rue Notre-Dame</streetAddressLine>
+                                        <city partType="CTY">Repentigny</city>
+                                        <state partType="STA">Qc</state>
+                                        <country partType="CNT">CA</country>
+                                        <postalCode partType="ZIP">J6A5K6</postalCode>
+                                    </addr>
+                                    <personalRelationship classCode="PRS">
+                                        <code code="MTH"/>
+                                        <relationshipHolder classCode="PSN" determinerCode="INSTANCE">
+                                            <id nullFlavor="UNK"/>
+                                            <name>
+                                                <given partType="GIV">Romy</given>
+                                                <family partType="FAM">Antoine-Dorsainville</family>
+                                            </name>
+                                        </relationshipHolder>
+                                    </personalRelationship>
+                                    <personalRelationship classCode="PRS">
+                                        <code code="FTH"/>
+                                        <relationshipHolder classCode="PSN" determinerCode="INSTANCE">
+                                            <id nullFlavor="UNK"/>
+                                            <name>
+                                                <given partType="GIV">Frederic</given>
+                                                <family partType="FAM">Armand</family>
+                                            </name>
+                                        </relationshipHolder>
+                                    </personalRelationship>
+                                    <languageCommunication>
+                                        <languageCode nullFlavor="MSK"/>
+                                    </languageCommunication>
+                                </identifiedPerson>
+                                <subjectOf typeCode="SBJ">
+                                    <observationEvent classCode="OBS" moodCode="EVN">
+                                        <code code="ProbabilityMatchObservation"/>
+                                        <value value="0.5980"/>
+                                    </observationEvent>
+                                </subjectOf>
+                            </identifiedEntity>
+                        </subject>
+                        <custodian typeCode="CST" contextControlCode="AP">
+                            <assignedDevice classCode="ASSIGNED">
+                                <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                                    <name>Registre des usagers</name>
+                                </assignedRepository>
+                                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                                    <name>Québec</name>
+                                </representedRepositoryJurisdiction>
+                            </assignedDevice>
+                        </custodian>
+                    </registrationEvent>
+                </subject>
+                <subjectOf typeCode="SUBJ" contextControlCode="AP">
+                    <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+                        <code code="ECARTMIN"/>
+                        <text>Écart mineur</text>
+                        <statusCode code="completed"/>
+                        <priorityCode code="I"/>
+                        <triggerFor xsi:nil="true"/>
+                    </detectedIssueEvent>
+                </subjectOf>
+                <queryAck>
+                    <queryId root="e66d871e-e906-4873-a378-5c91d64137a1"/>
+                    <queryResponseCode code="OK"/>
+                    <resultTotalQuantity value="1"/>
+                    <resultCurrentQuantity value="1"/>
+                    <resultRemainingQuantity value="0"/>
+                </queryAck>
+                <queryByParameter>
+                    <queryId root="e66d871e-e906-4873-a378-5c91d64137a1"/>
+                    <parameterList>
+                        <administrativeGender xsi:nil="true"/>
+                        <clientId>
+                            <value root="2.16.124.10.101.1.60.100" extension="ARML80541511"/>
+                        </clientId>
+                        <deceasedIndicator xsi:nil="true"/>
+                        <deceasedTime xsi:nil="true"/>
+                        <languageCode xsi:nil="true"/>
+                        <multipleBirthIndicator xsi:nil="true"/>
+                        <multipleBirthOrderNumber xsi:nil="true"/>
+                        <personBirthtime xsi:nil="true"/>
+                        <personalRelationshipCode xsi:nil="true"/>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </PRPA_IN101104CA>
+    </s:Body>
+</s:Envelope>

@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: phms-provincial-registry-service
+  webflux:
+    base-path: ${SPRING_PROFILES_ACTIVE}/phms
+  data:
+    mongodb:
+      auto-index-creation: true
+  cloud:
+    discovery:
+      client:
+        composite-indicator:
+          enabled: false
+server:
+  port: 8085
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+provinces:
+  quebec:
+    request:
+      webclient:
+        responseTimeOut: 1000
+        connectionTimeOut: 1000
+        readTimeOut: 1000
+        writeTimeOut: 1000
+        responseMemoryLimitInBytes: 1000000
+      sender:
+        pharmacyGroup: ${PHARMACY_GROUP:2.16.124.113618.1}
+        pharmacyLocationId: ${PHARMACY_LOCATION_ID:$provincialLocationId} #TODO Should come from JWT.
+        applicationVersionNumber: ${APPLICATION_VERSION_NUMBER:1.0.0.0}
+        extension: ${SENDER_APPLICATION_NAME:Vision Pharmaprix} #TODO Question: do we consider it at config map level?
+        name: ${SENDER_APPLICATION_ID:VPHX} #TODO Question: do we consider it at config map level?
+      security: #TODO Should come from ObjectStorage and DPS if encrypted
+        certificate:
+          alias: tq-a30b0288-f3b6-42f3-bc11-cc6ff2308af6
+          password: 1234
+          defaultLocation: certs/DEV_SQIMG2_PHARMAPRIX_VISION.pfx
+          location: target/certs
+      transaction:
+        findCandidateQuery:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R02.0/1.0/Usagers_LIST/FindCandidates/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.IR.IRA1_RechrUsag_svc/1/IFindCandidates/FindCandidates
+          messagePayloadTemplate:
+            uri: "qc/PATIENT_SEARCH-request.xml"
+        findProviderQuery:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R01/1.0/Intervenants_LIST/ProviderDetailsQuery/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RI.RIA1_ObtnListeDetlIntvn_svc/1/IProviderDetailsQuery/ProviderDetailsQuery
+          messagePayloadTemplate:
+            uri: "qc/PROVIDER_SEARCH-request.xml"
+        getPatientConsent:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R01.0/1.1/Consentement_GET/GetConsentDirective/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.CT.CTB1_ObtnValidCstmt_svc/1/IGetConsentDirective/GetConsentDirective
+          messagePayloadTemplate:
+            uri: "qc/PATIENT_CONSENT-request.xml"
+        findLocationSummary:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V01R01.4/1.0/ODS-LDS_LISTLDS/ListServiceDeliveryLocationSummaries/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RL.RLB2_RechrLieuDispServ_svc/1/IListServiceDeliveryLocationSummaries/ListServiceDeliveryLocationSummaries
+          messagePayloadTemplate:
+            uri: "qc/LOCATION_SEARCH-request.xml"
+        findLocationDetails:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V01R01.4/1.0/ODS-LDS_GETLDS/GetServiceDeliveryLocationDetails/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RL.RLB4_CnsulDetlLieuDispServ_svc/1/IGetServiceDeliveryLocationDetails/GetServiceDeliveryLocationDetails
+          messagePayloadTemplate:
+            uri: "qc/LOCATION_DETAILS-request.xml"
+            
+management:
+  info:
+    git:
+      mode: full
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info,health,vocab-service-info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    mongo:
+      enabled: true
+    pubsub:
+      enabled: false
+#TODO: Add micrometer

@@ -1,0 +1,22 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.deployment.app }}-ingress
+spec:
+  gateways:
+  - mesh
+  - {{ .Values.istio.namespace }}/{{ .Values.istio.gateway }}
+  hosts:
+  - {{ .Values.istio.dnsPrefix }}.banting.lblw.cloud
+  http:
+  - name: {{ .Values.deployment.app }}-route
+    match:
+    - uri:
+        regex: {{ .Values.istio.uri_regex }}
+    route:
+    - destination:
+        host: {{ .Values.deployment.app }}.{{ .Values.namespace }}.svc.cluster.local

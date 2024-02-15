@@ -1,0 +1,98 @@
+package rules
+
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.location.request.hl7v3.ProvincialLocationSearchRequest;
+import com.lblw.vphx.phms.domain.common.request.hl7v3.Request.RequestBuilder;
+import com.lblw.vphx.phms.domain.location.request.ProvincialLocationSearchCriteria;
+import com.lblw.vphx.phms.domain.common.request.ProvincialRequest;
+import static org.drools.core.util.StringUtils.isEmpty;
+import com.lblw.vphx.phms.rules.service.CodeableConceptValidationService;
+import com.lblw.vphx.phms.domain.common.request.ProvincialRequestControl;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+global CodeableConceptValidationService codeableConceptValidationService
+
+rule "VALID when locationName is not empty"
+    salience -1
+    when
+    	request: ProvincialLocationSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialLocationSearchCriteria(!isEmpty(locationName)) from $provincialRequestPayload;
+        operationOutcome: OperationOutcome(status==null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        update(operationOutcome)
+    end
+
+rule "INVALID when locationName is empty"
+    no-loop true
+    when
+        request: ProvincialLocationSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialLocationSearchCriteria(isEmpty(locationName)) from $provincialRequestPayload;
+        operationOutcome: OperationOutcome(issues.isEmpty(), status == null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Location Details")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "INVALID when locationType as systemLocationTypeCode is INVALID"
+    no-loop true
+    when
+        request: ProvincialLocationSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialLocationSearchCriteria(
+          !isEmpty(locationType),
+          $systemLocationTypeCode: locationType,
+          $provincialRequestControl: provincialRequestControl
+        ) from $provincialRequestPayload;
+        provincialRequestControl: ProvincialRequestControl($province: province) from $provincialRequestControl;
+        eval(!codeableConceptValidationService.isSystemLocationTypeValid($province, $systemLocationTypeCode))
+        operationOutcome: OperationOutcome(issues.isEmpty(), status == null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.173")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details(
+                            "The code used is not a valid code: "
+                                + $systemLocationTypeCode
+                                + ". Please use a valid code and try again.")
+                        .build());
+        update(operationOutcome)
+    end

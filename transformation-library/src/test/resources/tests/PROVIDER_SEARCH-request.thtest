@@ -1,0 +1,116 @@
+%TEMPLATE_MODE XML
+# ------------ separator comment -----------
+%NAME Find Provider Query Request
+# ------------------------------------------
+%CONTEXT
+phmsRequest = new com.lblw.vphx.phms.domain.provider.request.hl7v3.ProvincialProviderSearchRequest()
+phmsRequest.requestBodyTransmissionWrapper = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestBodyTransmissionWrapper()
+phmsRequest.requestBodyTransmissionWrapper.transmissionUniqueIdentifier = 'ABC123'
+phmsRequest.requestBodyTransmissionWrapper.transmissionCreationDateTime = '2021-08-04T00:00:00'
+phmsRequest.requestBodyTransmissionWrapper.processingCode = 'code'
+phmsRequest.requestBodyTransmissionWrapper.senderRoot = 'sender-root'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationId = 'sender-application-id'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationName = 'sender-application-name'
+phmsRequest.requestControlAct = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestControlAct()
+phmsRequest.requestControlAct.eventRoot = 'event-root'
+phmsRequest.requestControlAct.eventCorrelationId = 'event-ext'
+phmsRequest.provincialRequestPayload = new com.lblw.vphx.phms.domain.provider.request.ProvincialProviderSearchCriteria()
+phmsRequest.provincialRequestPayload.firstName = 'john'
+phmsRequest.provincialRequestPayload.lastName = 'patrick'
+phmsRequest.provincialRequestPayload.dateOfBirth = '1980-04-04'
+phmsRequest.provincialRequestPayload.gender = @com.lblw.vphx.phms.domain.common.Gender@M
+phmsRequest.provincialRequestPayload.providerRequestAddress = new com.lblw.vphx.phms.domain.provider.request.ProviderRequestAddress()
+phmsRequest.provincialRequestPayload.providerRequestAddress.city = 'Montreal'
+phmsRequest.provincialRequestPayload.providerRequestAddress.postalCode = 'HBE 123'
+phmsRequest.provincialRequestPayload.roleSpecialityCode = '2010000'
+providerIDRoot = '2.16.840.1.113883.4.277'
+providerIDExtension= 'niu'
+providerRoleCode = 'OPT'
+providerRoleSpecialityCode = '338'
+# ------------------------------------------
+%MESSAGES
+# ------------------------------------------
+%INPUT (file:src/main/resources/templates/qc/PROVIDER_SEARCH-request.xml)
+# ------------------------------------------
+%OUTPUT
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security soapenv:actor="IntervenantEmetteur"
+                  xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"/>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRPM_IN306010CA xmlns="urn:hl7-org:v3" ITSVersion="XML_1.0">
+            <!-- ******* Beginning of Transport Wrapper ******* -->
+            <id root="ABC123"/>
+            <creationTime value="2021-08-04T00:00:00"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.840.1.113883.3.40.3.1" extension="PRPM_IN306010CA"/>
+            <processingCode code="code"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <telecom />
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.14" extension="RI" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND">
+                <telecom />
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="sender-root" extension="sender-application-id"
+                        use="BUS"/>
+                    <name representation="TXT" mediaType="text/plain">sender-application-name</name>
+                </device>
+            </sender>
+            <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+            <controlActEvent classCode="CACT" moodCode="EVN">
+                <id root="event-root" extension="event-ext" use="BUS"/>
+                <code code="PRPM_IN306010CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <!-- ******* Beginning of Payload ******* -->
+                <queryByParameter>
+                    <queryId root="ABC123"/>
+                    <parameterList>
+                        <administrativeGender>
+                             <value code="M"/>
+                        </administrativeGender>
+                        <dOB>
+                            <value>1980-04-04</value>
+                        </dOB>
+                        <includeHistoryIndicator>
+                            <value value="false"/>
+                        </includeHistoryIndicator>
+                        <jurisdiction>
+                            <value code="QC"/>
+                        </jurisdiction>
+                        <name>
+                            <value use="L">
+                                <family>patrick</family>
+                                <given>john</given>
+                            </value>
+                        </name>
+                        <providerID>
+                            <value root="2.16.840.1.113883.4.277" extension="niu"/>
+                        </providerID>
+                        <qualification>
+                            <value code="338"/>
+                        </qualification>
+                        <roleType>
+                            <value code="OPT"/>
+                        </roleType>
+                        <serviceDeliveryLocationAddress>
+                            <value>
+                                <city>Montreal</city>
+                                <postalCode>HBE 123</postalCode>
+                            </value>
+                        </serviceDeliveryLocationAddress>
+                    </parameterList>
+                </queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+            </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+        </PRPM_IN306010CA>
+    </soapenv:Body>
+</soapenv:Envelope>

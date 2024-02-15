@@ -1,0 +1,61 @@
+{
+  "responseHeader": {
+    "transactionId": "8e67414a-cb91-42eb-bd33-5145bbd28e80",
+    "sessionId": "4f0dd4ef206a450680de1e42683b7",
+    "trackingId": "5e80dc44-7065-4d50-9766-265a2928fc64"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "c6ed068e-5406-4041-bfb9-01b634936a0f",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "1",
+    "resultTotalQuantity": "1",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": "21410",
+      "locationType": null,
+      "provincialLocationIdentifierType": "PUBLIC_HEALTH_INSURANCE_PERMIT_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": [
+      {
+        "name": "CLINIQUE DENTAIRE EMERILLON",
+        "locationType": {
+          "code": "LAB"
+        },
+        "region": "16",
+        "address": {
+          "streetAddressLine1": "2886 AV DE LYON",
+          "streetAddressLine2": "LONGUEUIL, QC",
+          "postalCode": "J4L3R2",
+          "city": "LONGUEUIL",
+          "country": null
+        },
+        "telecom": {},
+        "identifier": {
+          "value": "1000022499",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "LOCATION"
+        },
+        "permit": null,
+        "publicHealthInsurancePermit": null,
+        "pharmacyBilling": null
+      }
+    ]
+  }
+}

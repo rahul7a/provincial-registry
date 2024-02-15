@@ -1,0 +1,878 @@
+package rules
+
+import com.lblw.vphx.phms.rules.model.DroolsEngineResponseValidation;
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.response.hl7v3.DetectedIssue;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "Patient Default"
+    salience -1
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT");
+        operationOutcome: OperationOutcome(issues.isEmpty(), operationOutcome.status == null)
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("ERROR")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "PATIENT SUCCESS 1"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "OK",
+    	detectedIssues.isEmpty(),
+    	matchingIndex > 10);
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        update(operationOutcome)
+    end
+
+rule "PATIENT SUCCESS 2"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "OK",
+    	matchingIndex > 10);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "ECARTMAJ") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        update(operationOutcome)
+    end
+
+rule "PATIENT SUCCESS 3"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "OK",
+    	matchingIndex > 10);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "ECARTMIN") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 1"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "La date de naissance doit être plus petite ou égale à la date du jour") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.009")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 2"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Un paramètre d'entrée obligatoire est absent") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 3"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Le nom et le prénom du père doivent être renseignés si l'un ou l'autre est saisi") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 4"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(
+            eventCode == "VALIDAT",
+            eventText.substring(0,8) == "Le champ",
+            eventText.substring(13, eventText.length()) == "est invalide ou ne respecte pas le format requis"
+        ) from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-010")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 5"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(
+            eventCode == "VALIDAT",
+            eventText.substring(0,15) == "Le code de pays",
+            eventText.substring(20, eventText.length()) == "n'est pas présent dans l'entité \" Pays \""
+        ) from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 6"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(
+            eventCode == "VALIDAT",
+            eventText.substring(0,30) == "Le code de subdivision de pays",
+            eventText.substring(35, eventText.length()) == "n'est pas présent dans l'entité \" Subdivision de pays \""
+        ) from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 7"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Le code de subdivision de pays ne correspond pas au code de pays associé") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 8"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Le code de subdivision de pays et/ou le code postal ne devraient pas être présents car le code de pays correspondant n'est ni celui du Canada ni celui des États-Unis") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 9"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Le code de subdivision de pays et/ou le code postal ne devraient pas être présents car le code de pays est absent") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 10"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == null);
+        operationOutcome: OperationOutcome()
+        DetectedIssue(
+            eventCode == "VALIDAT",
+            eventText.substring(0,42) == "Les valeurs présentes du domaine de valeur",
+            eventText.substring(47, eventText.length()) == "ne sont pas conformes"
+        ) from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-011")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "MAXOCCURS"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "MAXOCCURS") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.002")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "VALIDAT 11"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "NF");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.009")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "NOTFND"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "NF");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "NOTFND") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.001")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "MISSMAND"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsCode == null,
+    	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "MISSMAND") from response.detectedIssues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.003")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "UNSVAL 1"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "UNSVAL",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty(),
+    	acknowledgementDetailsLocation == "PRPA_IN101103CA/acceptAckCode[@code]");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-007")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "UNSVAL 2"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "UNSVAL",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty(),
+    	acknowledgementDetailsLocation == "PRPA_IN101103CA/creationTime[@value]");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-001")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "UNSVAL 3"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "UNSVAL",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty(),
+    	acknowledgementDetailsLocation == "PRPA_IN101103CA/responseModeCode[@code]");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-002")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "UNSVAL 4"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "UNSVAL",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty(),
+    	acknowledgementDetailsLocation.substring(0,24) == "PRPA_IN101103CA/receiver");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-008")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "NS203"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "NS203",
+    	queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-003")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "NS200"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "NS200",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-004")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "NS202"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "NS202",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-005")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "NS250"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "NS250",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-006")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "SYN102"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsCode == "SYN102",
+    	queryResponseCode == "QE",
+    	detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CR-009")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "INTERR"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT",
+    	acknowledgementCode == "AR",
+    	acknowledgementDetailsCode == "INTERR",
+    	queryResponseCode == "AE",
+    	detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.046")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end

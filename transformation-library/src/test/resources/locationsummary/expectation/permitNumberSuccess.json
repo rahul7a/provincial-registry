@@ -1,0 +1,61 @@
+{
+  "responseHeader": {
+    "trackingId": "e0e16366-8e7f-41b4-aff4-e6f7007a38c3",
+    "transactionId": "d3b5216c-91e8-4330-abf0-ad74b3753d03",
+    "sessionId": "e28edc0827b64c30a4d55cdcfeece"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "e697641c-4456-4e19-a882-06397811ffb2",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "1",
+    "resultTotalQuantity": "1",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": "51221471",
+      "locationType": null,
+      "provincialLocationIdentifierType": "PERMIT_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": [
+      {
+        "name": "CENTRE LABRIE",
+        "locationType": {
+          "code": "LAB"
+        },
+        "region": "09",
+        "address": {
+          "streetAddressLine1": "659 BOUL BLANCHE",
+          "streetAddressLine2": "BAIE-COMEAU, QC",
+          "city": "BAIE-COMEAU",
+          "postalCode": "G5C2B2",
+          "country": null
+        },
+        "telecom": {},
+        "identifier": {
+          "value": "1000037653",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "LOCATION"
+        },
+        "permit": null,
+        "publicHealthInsurancePermit": null,
+        "pharmacyBilling": null
+      }
+    ]
+  }
+}

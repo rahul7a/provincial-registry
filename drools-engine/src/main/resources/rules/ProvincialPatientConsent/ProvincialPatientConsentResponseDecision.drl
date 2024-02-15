@@ -1,0 +1,776 @@
+package rules
+
+import com.lblw.vphx.phms.rules.model.DroolsEngineResponseValidation;
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.common.utils.DateUtils;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.response.Issue;
+import com.lblw.vphx.phms.domain.common.response.hl7v3.DetectedIssue;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+import java.util.List;
+
+rule "Default DroolsEngineResponseValidation"
+    lock-on-active
+    when
+        response: DroolsEngineResponseValidation()
+        operationOutcome: OperationOutcome()
+    then
+        drools.setFocus("set-status");
+        drools.setFocus("set-issues");
+    end
+
+rule "PATIENT CONSENT SUCCESS WITH WARNING OF PAST REFUSAL"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AA",
+        acknowledgementDetailsCode == null,
+        queryResponseCode == "OK",
+        detectedIssues.isEmpty(),
+        consentValidityStartDateTime!=null,
+        $consentValidityStartDateTime:consentValidityStartDateTime)
+        eval($consentValidityStartDateTime.isAfter(DateUtils.parseProvincialDateTimeFormatToInstantDateTime(Province.QC, "20070101050000")))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                        .getIssues()
+                        .add(
+                            Issue.builder()
+                                .code("EM.105")
+                                .classification(ResponseClassification.SYSTEM)
+                                .priority(
+                                IssuePriority.builder().code(Priority.WARNING).text(Strings.EMPTY).build())
+                                .severity(
+                                IssueSeverity.builder().code(Severity.MEDIUM).text(Strings.EMPTY).build())
+                                .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                                .description("")
+                                .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                         .details("")
+                                .build());
+        update(operationOutcome)
+    end
+
+rule "Unforeseen error OR Application error, query was not executed"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AR",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "INTERR",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.046")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Creation Date time invalid or in the future"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "UNSVAL",
+        acknowledgementDetailsLocation == "1",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-014")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Invalid Responsemodecode"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "UNSVAL",
+        acknowledgementDetailsLocation == "2",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-001")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Invalid HL7 version"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "NS203",
+        acknowledgementDetailsLocation == "3",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-002")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Wrong OID"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "NS200",
+        acknowledgementDetailsLocation == "4",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-003")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Wrong ProcessingCode"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "NS202",
+        acknowledgementDetailsLocation == "5",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-004")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Wrong ProcessingModeCode"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "NS250",
+        acknowledgementDetailsLocation == "6",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-005")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Wrong AcceptAckCode in Query Ack"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "UNSVAL",
+        acknowledgementDetailsLocation == "7",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-006")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Receiver does not match the FCO Registry"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "UNSVAL",
+        acknowledgementDetailsLocation == "8",
+        queryResponseCode == "AE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-007")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Error in query parameter"
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PATIENT CONSENT",
+    	acknowledgementCode == "AE",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "SYN102",
+        acknowledgementDetailsLocation == "9",
+        queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-008")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "More than 1 Reference date provided"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Vous devez fournir une seule date de référence") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-010")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "Missing mandatory parameter"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "MISSMAND", eventText == "Paramètre obligatoire manquant") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-011")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "Reference date is in future"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Date de référence dans le futur.") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-012")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "The type of consent is not valid. The allowed value is: DS"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Le type de consentement n'est pas valide. La valeur permise est : DS.") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-013")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "Use a reference date and time that is less than 2007-01-01"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Vous ne pouvez pas utiliser une date de référence inférieure à 2007-01-01.") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-015")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "The user's NIU in the request does not match the patient's NIU in context"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "QE");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "NOTFND", eventText == "Le NIU de l'usager dans la requête ne correspond pas au NIU du patient en contexte.") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-016")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "A refusal directive is found on the date on which validation of consent is requested"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "NF");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "NOTFND", eventText == "Une directive de refus a été trouvée à la date à laquelle la validation du consentement est demandée.") from response.detectedIssues
+     then
+        operationOutcome
+                 .getIssues()
+                 .add(
+                     Issue.builder()
+                         .code("EM.075")
+                         .classification(ResponseClassification.SYSTEM)
+                         .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                         .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                         .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                         .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                         .details("CT-017")
+                         .build());
+        update(operationOutcome)
+     end
+
+rule "No data found"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "NF");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "NOTFND", eventText == "Aucune donnée trouvée") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-018")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "Generic error the info submitted is no longer valid"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT",
+      	acknowledgementCode == "AA",
+      	acknowledgementDetailsCode == null,
+      	queryResponseCode == "NF");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "VALIDAT", eventText == "Les informations soumises ne sont plus valides car l'entité a fait l'objet d'une fusion ou d'une scission.") from response.detectedIssues
+     then
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("CT-009")
+                        .build());
+        update(operationOutcome)
+     end
+
+rule "This user refuses to participate"
+     lock-on-active
+     agenda-group "set-issues"
+     when
+      	response: DroolsEngineResponseValidation(
+      	province == Province.QC,
+      	identifierType == "PATIENT CONSENT");
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "DISSENT") from response.detectedIssues
+     then
+        operationOutcome
+                .setIssues(
+                 List.of(
+                    Issue.builder()
+                        .code("EM.104")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build()
+                    )
+                 );
+        update(operationOutcome)
+     end
+
+rule "PATIENT CONSENT Default"
+    salience -1
+    lock-on-active
+    agenda-group "set-issues"
+    when
+    	response: DroolsEngineResponseValidation(
+            province == Province.QC,
+            identifierType == "PATIENT CONSENT",
+            acknowledgementCode != "AA" ||
+            acknowledgementDetailsCode != null ||
+            queryResponseCode != "OK" ||
+            !detectedIssues.isEmpty()
+        );
+        operationOutcome: OperationOutcome(issues.isEmpty())
+    then
+        operationOutcome
+            .getIssues()
+            .add(
+                Issue.builder()
+                    .code("EM.075")
+                    .classification(ResponseClassification.SYSTEM)
+                    .priority(
+                    IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                    .severity(
+                    IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                    .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                    .description("")
+                    .triggeredBy(
+                    Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                    .details("ERROR")
+                    .build());
+        update(operationOutcome)
+    end
+
+rule "PATIENT CONSENT SUCCESS"
+    agenda-group "set-status"
+    when
+    	response: DroolsEngineResponseValidation( province == Province.QC, identifierType == "PATIENT CONSENT" );
+        operationOutcome: OperationOutcome(issues.isEmpty())
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text("").build());
+        update(operationOutcome)
+    end
+
+rule "When issue details contains only EM.105 update status to accept-warning"
+    agenda-group "set-status"
+    when
+        response: DroolsEngineResponseValidation( province == Province.QC, identifierType == "PATIENT CONSENT" );
+        operationOutcome: OperationOutcome($issues:issues, issues.size() == 1)
+        Issue(code == "EM.105") from $issues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT_WARNING).text("").build());
+        update(operationOutcome)
+    end
+
+rule "SET Operation outcome status Reject when issues are not Empty"
+    agenda-group "set-status"
+    when
+        response: DroolsEngineResponseValidation( province == Province.QC, identifierType == "PATIENT CONSENT" );
+        operationOutcome: OperationOutcome($issues:issues)
+        Issue(code != "EM.105") from $issues
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text("").build());
+        update(operationOutcome)
+    end

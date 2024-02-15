@@ -1,0 +1,85 @@
+{
+  "responseHeader": {
+    "transactionId": "10900ee4-bd70-406a-b1db-079931db8f6b",
+    "sessionId": "b559e920e2da4251b50585399c083",
+    "trackingId": "24926782-6734-44e5-89c2-a289f7fbaa7a"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "f19afdfc-bbaf-49e8-a7f8-11ddb8c9c076",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "2",
+    "resultTotalQuantity": "2",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": null,
+      "locationType": "LAB",
+      "provincialLocationIdentifierType": null,
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": [
+      {
+        "name": "LABORATOIRE MEDICALE DE LEVIS",
+        "locationType": {
+          "code": "LAB"
+        },
+        "region": "12",
+        "address": {
+          "streetAddressLine1": "100-4975 BOUL DE LA RIVE-SUD S",
+          "streetAddressLine2": "LEVIS, QC",
+          "postalCode": "G6V4Z5",
+          "city": "LEVIS",
+          "country": null
+        },
+        "telecom": {},
+        "identifier": {
+          "value": "1000038958",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "LOCATION"
+        },
+        "permit": null,
+        "publicHealthInsurancePermit": null,
+        "pharmacyBilling": null
+      },
+      {
+        "name": "Eurofins Environex",
+        "locationType": {
+          "code": "LAB"
+        },
+        "region": "16",
+        "address": {
+          "streetAddressLine1": "2325 Boul Fernand-Lafontaine",
+          "streetAddressLine2": "Longueuil, QC",
+          "postalCode": "J4N1N7",
+          "city": "Longueuil",
+          "country": null
+        },
+        "telecom": {},
+        "identifier": {
+          "value": "6000001969",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "LOCATION"
+        },
+        "permit": null,
+        "publicHealthInsurancePermit": null,
+        "pharmacyBilling": null
+      }
+    ]
+  }
+}

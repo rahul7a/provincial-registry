@@ -1,0 +1,54 @@
+namespace: vph-phms-lwr
+env: "uat"
+deployment:
+  replicaCount: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  image: northamerica-northeast1-docker.pkg.dev/vph-artifacts/vph-phms/phms-provincial-registry-service
+  tag: ""
+  app: vph-phms-provincial-registry-service-uat
+  port: 8085
+  resources:
+    limits:
+      cpu: 700m
+      memory: "1536Mi"
+    requests:
+      cpu: 300m
+      memory: "512Mi"
+  hpa:
+    enable: true
+    minReplicas: 1
+    maxReplicas: 1
+    metrics1:
+      targetCpuUsage: 65
+      name: cpu
+  appdynamics:
+    enable: false
+    registry: northamerica-northeast1-docker.pkg.dev
+    repository: lt-pharmacy-tools/phc-tools-images/appd-agent
+    tag: dev-latest
+    appName: VPHx-PHMS-Lwr
+    imagePullPolicy: Always
+    confDir: /AgentConfig
+    account: loblaw-pt
+    host: loblaw-pt.saas.appdynamics.com
+    port: 443
+    ssl: true
+    APPD_KEY: ""
+  serviceAccountName: vph-phms-uat-ksa
+  googleServiceAccountEmail: sa-vph-phms-wi-lwr@vph-phms-lwr.iam.gserviceaccount.com
+istio:
+  uri_regex: \/uat\/(phms|phms\/([^\s]*))
+envMap:
+  SPRING_PROFILES_ACTIVE: "uat"
+  GOOGLE_CLOUD_PROJECT: "vph-phms-lwr"
+  GCP_PROJECT: "lt-sre-shipyard"
+  PHARMACY_GROUP: "2.16.124.113618.1"
+  PHARMACY_LOCATION_ID: "$provincialLocationId"
+  APPLICATION_VERSION_NUMBER: "1.0.0.1"
+  SENDER_APPLICATION_NAME: "Vision Pharmaprix"
+  SENDER_APPLICATION_ID: "VPHX"

@@ -1,0 +1,44 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://phms-srv-db-usr-lwr:${sm://projects/vph-phms-lwr/secrets/phms-srv-db-usr-pwd}@vph-shared-lwr-pri.xynd2.mongodb.net/phmsDB-sit?retryWrites=true&w=majority
+      auto-index-creation: true
+  redis:
+    host: 10.230.105.59
+    port: 6379
+
+provinces:
+  quebec:
+    request:
+      sender:
+        processingCode: D
+
+services:
+  internal:
+    responseTimeout: 2000
+    connectTimeout: 2000
+    readTimeout: 2000
+    writeTimeout: 2000
+    graphql:
+      url: https://vph-lwr.banting.lblw.cloud/sit/aggregate
+    objectStorage:
+      baseUrl: https://vph-lwr.banting.lblw.cloud/sit/objectstorage/
+      objectStorePath: vphx/objectstore/{refId}
+    rds:
+      schedule:
+        cron: 0 0 3 1/1 * ?
+      baseUrl: http://hwl-dis-referencedata.hwl-dis-sit1.svc.cluster.local:8080/
+      actuator: /actuator/health
+      vocabPath: v1/lookup/VOCAB/{vocabType}
+    iam:
+      clientId: ${sm://projects/vph-phms-lwr/secrets/lwr-b2c-client}
+      clientSecret: ${sm://projects/vph-phms-lwr/secrets/lwr-b2c-secret}
+      environment: dev
+    dps:
+      baseUrl: https://vph-lwr.banting.lblw.cloud/sit/dataprotection/
+      paths:
+        deidentifyBlobPath: deidentify/blob
+        reidentifyBlobPath: reidentify/blob
+
+rds:
+  baseUrl: http://hwl-dis-referencedata.hwl-dis-sit1.svc.cluster.local:8080/

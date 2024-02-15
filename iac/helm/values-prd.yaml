@@ -1,0 +1,58 @@
+namespace: vph-phms-prd
+env: "prd"
+deployment:
+  replicaCount: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  image: northamerica-northeast1-docker.pkg.dev/vph-artifacts/vph-phms/phms-provincial-registry-service
+  tag: ""
+  app: vph-phms-provincial-registry-service-prd
+  port: 8085
+  resources:
+    limits:
+      cpu: 900m
+      memory: "2036Mi"
+    requests:
+      cpu: 300m
+      memory: "1024Mi"
+  hpa:
+    enable: true
+    minReplicas: 1
+    maxReplicas: 1
+    metrics1:
+      targetCpuUsage: 85
+      name: cpu
+    # appdynamics:
+    # enable: false
+    # registry: northamerica-northeast1-docker.pkg.dev
+    # repository: lt-pharmacy-tools/phc-tools-images/appd-agent
+    # tag: dev-latest
+    # appName: VPHX-POV
+    # imagePullPolicy: Always
+    # confDir: /AgentConfig
+    # account: loblaw-pt
+    # host: loblaw-pt.saas.appdynamics.com
+    #  port: 443
+    # ssl: true
+    # APPD_KEY: ""
+  serviceAccountName: vph-phms-prd-ksa
+  googleServiceAccountEmail: sa-vph-phms-wi-prd@vph-phms-prd.iam.gserviceaccount.com
+istio:
+  uri_regex: \/prd\/(phms|phms\/([^\s]*))
+  dnsPrefix: "vph-prd"
+  namespace: vph-common-prd
+  gateway: vph-prd-istio-gateway-ingress
+envMap:
+  SPRING_PROFILES_ACTIVE: "prd"
+  GOOGLE_CLOUD_PROJECT: "vph-phms-prd"
+  GCP_PROJECT: "lt-sre-shipyard"
+  PHARMACY_GROUP: "2.16.124.113618.1"
+  PHARMACY_LOCATION_ID: "9999999999"
+  APPLICATION_VERSION_NUMBER: "1.0.0.1"
+  SENDER_APPLICATION_NAME: "Vision Pharmaprix"
+  SENDER_APPLICATION_ID: "VPHX"
+

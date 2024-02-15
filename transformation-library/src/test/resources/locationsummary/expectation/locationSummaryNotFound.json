@@ -1,0 +1,36 @@
+{
+  "responseHeader": {
+    "transactionId": "2ed436f1-77dc-44f6-add9-c2b3bb38a00a",
+    "sessionId": "a227df79ae5746d2a80b4133347b1",
+    "trackingId": "7d7446b5-dac4-43c3-8b8a-636515153481"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "ae2ba7bd-efd8-4e68-982a-a3f359db1269",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "NF",
+    "resultCurrentQuantity": "0",
+    "resultTotalQuantity": "0",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": "2141000",
+      "locationType": null,
+      "provincialLocationIdentifierType": "PUBLIC_HEALTH_INSURANCE_PERMIT_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": []
+  }
+}

@@ -1,0 +1,227 @@
+query PrescriptionTransactionQuery($transactionId: String!) {
+  prescriptionTransaction:prescriptionTransactionSearchById(transactionId: $transactionId) {
+    systemIdentifier:id
+    status
+    cancelReason
+    supplyDays
+    intervalDays
+    workflowType
+    substitutionReason
+    dispenseType:fillType
+    product {
+          category
+          indications {
+            therapeuticObjective
+            source
+            id
+            diagCode
+            diagCodeData {
+              description {
+                lang
+                value
+                }
+                diagCode
+                isActive
+              }
+            }
+    }
+    workflowAuditHistory {
+          auditDetails {
+            userDetails {
+              actDateTime
+              errors {
+                field
+                reason
+              }
+              rejectReason
+              updatedFields
+              user {
+                _id
+                roles
+              }
+            }
+            workflowAction {
+              action
+              workFlowStatus
+            }
+          }
+          auditUserList {
+            auditUserData {
+              licenceNumber
+              licenceProvince
+              user {
+                firstName
+                idpUserId
+                lastName
+              }
+              state
+            }
+          }
+    }
+    txNumber
+    serviceDate
+    createdDate
+    dispensedQuantity
+    virtualBasket {
+      promiseTime:promiseDateTime
+    }
+    prescription {
+      systemIdentifier:id
+      patientId
+      pharmacyId
+      productSelection
+      rxNumber
+      rxSource
+      dispenseSource
+      refillUntilDate
+      expiryDate
+      refills
+      remainingRefills
+      prescriptionSource: rxSource
+      totalAuthorizedQuantity
+      workflowType
+      #unit
+      #TODO: removing Unit field temporarily, need to revert later
+      writtenDate
+      prescribedQuantity
+      createdBy
+      prescriptionStatus
+      trialSupplyFlag :eligibleForTrial
+      remainingQuantity
+      pharmacyDetail {
+        pharmacyName
+        phoneNumber
+        address
+        storeNumber
+      }
+      sig {
+        code
+        defaultSigFlag
+        language
+        descriptionEn
+        descriptionFr
+      }
+      sigData {
+        code {
+         en
+         fr
+        }
+        name {
+         en
+         fr
+        }
+      }
+      routeOfAdministration
+      prescriberMetaData: prescriber {
+        prescriberId
+        prescriberProvincialLocationIdentifier
+        prescriberProvincialName
+        outOfProvince
+      }
+      prescriber :prescriberData {
+        systemIdentifier: id
+        firstName
+        lastName
+        licenseProvince {
+          code
+        }
+        licenseNumber
+        activeFlag: isActive
+        phmsProviderData {
+          niui
+        }
+        prescriberType {
+          code
+        }
+      }
+    }
+    patient {
+      patientType
+      systemId:id
+      firstName
+      lastName
+      provincialIdentifier :niu
+      dateOfBirth
+      genderOrdinalValue:sex
+    }
+    compoundDrug {
+      name {
+        lang
+        value
+      }
+      ingredient {
+        din
+        upc
+        tradeName {
+          lang
+          value
+        }
+        type
+      }
+      drugIngredients {
+        din
+        upc
+        tradeName {
+          lang
+          value
+        }
+        quantity
+        ingredientId
+        type
+        packSize {
+          denominator {
+            code
+            value
+          }
+        }
+      }
+      routeOfAdministration {
+        code
+      }
+      compoundType {
+        privateInsurance {
+          code
+       }
+      }
+      compoundPricing {
+        totalDispensedQtyUOM {
+          code
+        }
+      }
+    }
+    medication:product {
+      din
+      systemIdentifier:id
+      tradeName
+      productType:type
+      legalStatus
+      source
+      category
+      therapeuticIndication:indications {
+        systemIdentifier :id
+        #cdcoData {
+         #cdcoId
+         # }
+        source
+        therapeuticObjective
+      }
+      form
+    }
+    drug {
+      tradeName {
+        lang
+        value
+      }
+      amount {
+        denominator {
+          code
+          value
+        }
+      }
+      routeOfAdministration {
+        code
+      }
+      upc
+    }
+  }
+}

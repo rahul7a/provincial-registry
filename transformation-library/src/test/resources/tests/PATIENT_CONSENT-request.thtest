@@ -1,0 +1,90 @@
+%TEMPLATE_MODE XML
+# ------------ separator comment -----------
+%NAME Get Patient Consent Request
+# ------------------------------------------
+%CONTEXT
+phmsRequest = new com.lblw.vphx.phms.domain.patient.consent.request.hl7v3.ProvincialPatientConsentRequest()
+phmsRequest.requestBodyTransmissionWrapper = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestBodyTransmissionWrapper()
+phmsRequest.requestBodyTransmissionWrapper.transmissionUniqueIdentifier = 'ABC123'
+phmsRequest.requestBodyTransmissionWrapper.transmissionCreationDateTime = '2021-08-04T00:00:00'
+phmsRequest.requestBodyTransmissionWrapper.processingCode = 'code'
+phmsRequest.requestBodyTransmissionWrapper.senderRoot = 'sender-root'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationId = 'sender-application-id'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationName = 'sender-application-name'
+phmsRequest.requestControlAct = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestControlAct()
+phmsRequest.requestControlAct.eventRoot = 'event-root'
+phmsRequest.requestControlAct.eventCorrelationId = 'event-ext'
+phmsRequest.provincialRequestPayload = new com.lblw.vphx.phms.domain.patient.consent.request.ProvincialPatientConsentCriteria()
+phmsRequest.provincialRequestPayload.firstName = 'ivan'
+phmsRequest.provincialRequestPayload.lastName = 'helios'
+phmsRequest.provincialRequestPayload.patientIdentifier = '1234567'
+phmsRequest.provincialRequestPayload.effectiveDateTime = '20090905100144'
+
+# ------------------------------------------
+%MESSAGES
+# ------------------------------------------
+%INPUT (file:src/main/resources/templates/qc/PATIENT_CONSENT-request.xml)
+# ------------------------------------------
+%OUTPUT
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+  <soapenv:Header>
+    <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd" soapenv:actor="IntervenantEmetteur"/>
+  </soapenv:Header>
+  <soapenv:Body Id="_0">
+	<RCMR_IN010996CAQC_V01 xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0">
+	            <!-- ******* Beginning of Transport Wrapper ******* -->
+	  <id root="ABC123"/>
+	  <creationTime value="2021-08-04T00:00:00"/>
+	  <responseModeCode code="I"/>
+	  <versionCode code="NE2006"/>
+	  <interactionId displayable="true" extension="RCMR_IN010996CAQC_V01" root="2.16.124.10.101.1.60.3.19"/>
+	  <processingCode code="code"/>
+	  <processingModeCode code="T"/>
+	  <acceptAckCode code="AL"/>
+	  <receiver typeCode="RCV">
+	    <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.12" extension="FCO" use="BUS"/>
+        </device>
+	  </receiver>
+	  <sender typeCode="SND">
+		<device classCode="DEV" determinerCode="INSTANCE">
+		  <id root="sender-root" extension="sender-application-id" use="BUS"/>
+		    <name mediaType="text/plain" representation="TXT">sender-application-name</name>
+		</device>
+	  </sender>
+		    <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+	  <controlActEvent classCode="CACT" moodCode="EVN">
+	    <id extension="event-ext" root="event-root" use="BUS"/>
+		<code code="RCMR_TE010996CA"/>
+		<statusCode code="completed"/>
+		<recordTarget contextControlCode="AP" typeCode="RCT">
+		  <patient1 classCode="PAT">
+		    <id extension="1234567" root="2.16.840.1.113883.4.56"/>
+			  <patientPerson classCode="PSN" determinerCode="INSTANCE">
+			    <name>
+				  <family mediaType="text/plain" partType="FAM" representation="TXT">helios</family>
+				  <given mediaType="text/plain" partType="GIV" representation="TXT">ivan</given>
+				</name>
+			  </patientPerson>
+		  </patient1>
+		</recordTarget>
+			    <!-- ******* Beginning of Payload ******* -->
+		<queryByParameter>
+		  <queryId root="ABC123"/>
+		  <parameterList>
+			<clientID>
+			  <value extension="1234567" root="2.16.840.1.113883.4.56"/>
+			</clientID>
+			<code code="DS"/>
+			<effectiveTime>
+			  <high value="20090905100144"/>
+			</effectiveTime>
+		  </parameterList>
+		</queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+      </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+    </RCMR_IN010996CAQC_V01>
+  </soapenv:Body>
+</soapenv:Envelope>

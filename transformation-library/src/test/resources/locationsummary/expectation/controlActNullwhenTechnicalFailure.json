@@ -1,0 +1,37 @@
+{
+  "responseHeader": {
+    "trackingId": "1c085c9e-fa98-4b3e-9f1c-00d6f9a71e83",
+    "transactionId": "fa31d15a-ae27-4407-aa74-94c97f78be60",
+    "sessionId": null
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "9a4b90b4-bf9e-4f49-ac52-3c1e0272f455",
+    "acknowledgeTypeCode": "AE"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "QE",
+    "resultCurrentQuantity": "0",
+    "resultTotalQuantity": "0",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": null,
+    "eventCorrelationId": null,
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": null,
+      "locationType": null,
+      "provincialLocationIdentifierType": null,
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null,
+        "country": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": []
+  }
+}

@@ -1,0 +1,59 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+  mongodb:
+    embedded:
+      version: 4.4.11
+
+provinces:
+  quebec:
+    request:
+      webclient:
+        responseTimeOut: 1000
+        connectionTimeOut: 1000
+        readTimeOut: 500
+        writeTimeOut: 500
+        responseMemoryLimitInBytes: 1000000
+      sender:
+        pharmacyGroup: ${PHARMACY_GROUP:2.16.124.113618.1}
+        pharmacyLocationId: ${PHARMACY_LOCATION_ID:$provincialLocationId}
+        applicationVersionNumber: ${APPLICATION_VERSION_NUMBER:1.0.0.0}
+        extension: ${SENDER_APPLICATION_NAME:Vision Pharmaprix}
+        name: ${SENDER_APPLICATION_ID:VPHX}
+        processingcode: "D"
+      security:
+        certificate:
+          alias: tq-a30b0288-f3b6-42f3-bc11-cc6ff2308af6
+          password: 1234
+          schedule:
+            cron: 0 0 3 1/1 * ?
+          defaultLocation: certs/DEV_SQIMG2_PHARMAPRIX_VISION.pfx
+      transaction:
+        findCandidateQuery:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R02.0/1.0/Usagers_LIST/FindCandidates/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.IR.IRA1_RechrUsag_svc/1/IFindCandidates/FindCandidates
+        findProviderQuery:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R01/1.0/Intervenants_LIST/ProviderDetailsQuery/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RI.RIA1_ObtnListeDetlIntvn_svc/1/IProviderDetailsQuery/ProviderDetailsQuery
+        getPatientConsent:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V02R01.0/1.1/Consentement_GET/GetConsentDirective/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.CT.CTB1_ObtnValidCstmt_svc/1/IGetConsentDirective/GetConsentDirective
+        findLocationSummary:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V01R01.4/1.0/ODS-LDS_LISTLDS/ListServiceDeliveryLocationSummaries/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RL.RLB2_RechrLieuDispServ_svc/1/IListServiceDeliveryLocationSummaries/ListServiceDeliveryLocationSummaries
+        findLocationDetails:
+          uri: HTTPS://CAIS.FORMA.S5.D4.RAMQ.GOUV.QC.CA/FOR/CA/XML/V01R01.4/1.0/ODS-LDS_GETLDS/GetServiceDeliveryLocationDetails/ReceptionService.svc
+          header:
+            soapAction: SOAPAction
+            value: http://RAMQ.RL.RLB4_CnsulDetlLieuDispServ_svc/1/IGetServiceDeliveryLocationDetails/GetServiceDeliveryLocationDetails
+
+

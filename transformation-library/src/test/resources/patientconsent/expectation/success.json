@@ -1,0 +1,34 @@
+{
+  "responseHeader": {
+    "transactionId": "f11eab4f-89c1-4375-85d3-50e49997a2e0",
+    "sessionId": "d326087860e84da4b3cd163262592",
+    "trackingId": "95478a35-a621-4de7-9923-7a7644feb98b"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "99993516-3af6-4ea7-a18d-6aca87d312b0",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "1",
+    "resultTotalQuantity": "1",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": [
+    {
+      "eventCode": "eventCode",
+      "eventText": "eventText"
+    }
+  ],
+  "provincialResponsePayload": {
+    "consentToken": "<consentEvent classCode=\"CONS\" moodCode=\"EVN\"><code code=\"DS\"/><effectiveTime><low value=\"20070101050000\"/><high value=\"20211124215532\"/></effectiveTime><subject1 typeCode=\"SBJ\" contextControlCode=\"OP\"><patient classCode=\"PAT\"><id root=\"2.16.840.1.113883.4.56\" extension=\"8000000300\" displayable=\"true\"/></patient></subject1></consentEvent>",
+    "consentValidityStartDateTime": "2007-01-01T10:00:00Z",
+    "consentValidityEndDateTime": "2021-11-25T02:55:32Z",
+    "identifier": {
+      "value": "8000000300",
+      "assigner": "Qc",
+      "system": "NIU-U",
+      "type": "PATIENT"
+    }
+  }
+}

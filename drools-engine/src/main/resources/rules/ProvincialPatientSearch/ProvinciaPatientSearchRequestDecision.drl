@@ -1,0 +1,86 @@
+package rules
+
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.patient.request.hl7v3.ProvincialPatientSearchRequest;
+import com.lblw.vphx.phms.domain.common.request.hl7v3.Request.RequestBuilder;
+import com.lblw.vphx.phms.domain.patient.request.ProvincialPatientSearchCriteria;
+import com.lblw.vphx.phms.domain.common.request.ProvincialRequest;
+import static org.drools.core.util.StringUtils.isEmpty;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "when missing Patient Details"
+    when
+    request: ProvincialPatientSearchRequest($provincialRequestPayload: provincialRequestPayload)
+    provincialRequestPayload: ProvincialPatientSearchCriteria() from $provincialRequestPayload;
+    operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Patient Details")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "when recieved PHN"
+    when
+    	request: ProvincialPatientSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialPatientSearchCriteria(
+        provincialHealthNumber != null && isEmpty(provincialHealthNumber) == false)
+        from $provincialRequestPayload;
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.getIssues().clear();
+        update(operationOutcome)
+    end
+
+rule "when recieved NIUU"
+    when
+    	request: ProvincialPatientSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialPatientSearchCriteria(
+        patientIdentifier != null && isEmpty(patientIdentifier) == false)
+        from $provincialRequestPayload;
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.getIssues().clear();
+        update(operationOutcome)
+    end
+
+rule "when recieved all other patient details"
+    when
+    	request: ProvincialPatientSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialPatientSearchCriteria(
+        firstName != null && isEmpty(firstName) == false,
+        lastName != null && isEmpty(lastName) == false,
+        dateOfBirth != null,
+        gender != null) from $provincialRequestPayload;
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.getIssues().clear();
+        update(operationOutcome)
+    end

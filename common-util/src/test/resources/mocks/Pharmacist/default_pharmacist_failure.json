@@ -1,0 +1,51 @@
+{
+  "errors": [
+    {
+      "message": "404: Not Found",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "storeGetDefaultPharmacist"
+      ],
+      "extensions": {
+        "code": "INTERNAL_SERVER_ERROR",
+        "response": {
+          "url": "https://vph-lwr.banting.lblw.cloud/dev/pharmacyiam-pharmacystore/pharmacies/61803942f5043d49f3521df71/defaultPharmacist",
+          "status": 404,
+          "statusText": "Not Found",
+          "body": {
+            "version": null,
+            "status": 404,
+            "code": "ST3004",
+            "requestId": null,
+            "userMessage": "Pharmacy not found",
+            "developerMessage": "Pharmacy not found",
+            "moreInfo": null
+          }
+        },
+        "exception": {
+          "stacktrace": [
+            "Error: 404: Not Found",
+            "    at StoreApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:85:25)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)",
+            "    at __awaiter (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:4:12)",
+            "    at StoreApi.errorFromResponse (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:75:16)",
+            "    at StoreApi.<anonymous> (/app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:53:34)",
+            "    at Generator.next (<anonymous>)",
+            "    at /app/node_modules/apollo-datasource-rest/dist/RESTDataSource.js:8:71",
+            "    at new Promise (<anonymous>)"
+          ]
+        }
+      }
+    }
+  ],
+  "data": {
+    "storeGetDefaultPharmacist": null
+  }
+}

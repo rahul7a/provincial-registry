@@ -1,0 +1,24 @@
+spring:
+  mongodb:
+    embedded:
+      version: 4.4.11
+  data:
+    mongodb:
+      auto-index-creation: true
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+provinces:
+  quebec:
+    request:
+      webclient:
+        responseMemoryLimitInBytes: 1000000
+        responseTimeOut: 2000
+        connectionTimeOut: 2000
+        readTimeOut: 1000
+        writeTimeOut: 1000
+      security:
+        certificate:
+          schedule:
+            cron: 0 0 3 1/1 * ?

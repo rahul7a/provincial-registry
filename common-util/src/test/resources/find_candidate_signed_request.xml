@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"
+                  soapenv:actor="IntervenantEmetteur">
+            <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <SignedInfo>
+                    <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                    <Reference URI="#_0">
+                        <Transforms>
+                            <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                        </Transforms>
+                        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                        <DigestValue>wKmsdEg2sbNWoWx+cWkR49Cnbbw=</DigestValue>
+                    </Reference>
+                </SignedInfo>
+                <SignatureValue>
+                    SmQqWJ1lUDRnZHLI4uusu9cjRHLnQnwaPN/0CEaXvHI9sLOExVGAKlfnigcWJOkxP+FSdLmaxKv4MNf6Ys6HSgUVgaHLeZE/umFANKgKKCVTV6lmekf/CL8gQVPBiVvnSNv241KmEiZ+cn1EGBQvlBmRo9/BlLj03sIfUfmlveTaM1xB7XS5OBbFFrkAGT9fDGSbOFNIpFkbdKBE6sm74Rnlai6MdXG4GfH+HZMLU3QruztJxdHkfb+vspTDI9LAFs+d92YpJvtv43hxjAJ+g96z7oOqU2+sxfUgj4lloDGih8mM+9+2w9mqqwfcXCOhLgcT++oGHyejRE8kqXf+mA==
+                </SignatureValue>
+                <KeyInfo>
+                    <X509Data>
+                        <X509SubjectName>CN=DEV_SQIMG2_PHARMAPRIX_VISION,OU=1000001451,L=MONTREAL,ST=QC,C=CA
+                        </X509SubjectName>
+                        <X509Certificate>
+                            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
+                        </X509Certificate>
+                    </X509Data>
+                </KeyInfo>
+            </Signature>
+        </Security>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRPA_IN101103CA xmlns="urn:hl7-org:v3"
+                         ITSVersion="XML_1.0">
+            <!-- ******* Beginning of Transport Wrapper ******* -->
+            <id root="2.16.840.1.113883.3.40.1.5"/>
+            <creationTime value="20090905100144"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId displayable="true" extension="PRPA_IN101103CA" root="2.16.124.10.101.1.60.5.2.110"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id extension="RU" root="2.16.124.10.101.1.60.2.10" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id extension="TMPT-RI" root="2.16.840.1.113883.3.40.5.2" use="BUS"/>
+                    <name mediaType="text/plain" representation="TXT"/>
+                </device>
+            </sender>
+            <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+            <controlActEvent classCode="CACT" moodCode="EVN">
+                <id extension="564654" root="2.16.840.1.113883.3.40.4.1" use="BUS"/>
+                <code code="PRPA_TE101103CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <!-- ******* Beginning of Payload ******* -->
+                <queryByParameter>
+                    <queryId root="BB7321A1-3365-44BA-8F7C-AF54EF0F0146"/>
+                    <parameterList>
+                        <clientId>
+                            <value extension="MAYM21561219" root="2.16.124.10.101.1.60.100"/>
+                        </clientId>
+                    </parameterList>
+                </queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+            </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+        </PRPA_IN101103CA>
+    </soapenv:Body>
+</soapenv:Envelope>

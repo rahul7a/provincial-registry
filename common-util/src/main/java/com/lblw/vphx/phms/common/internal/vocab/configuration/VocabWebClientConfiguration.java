@@ -1,0 +1,56 @@
+package com.lblw.vphx.phms.common.internal.vocab.configuration;
+
+import com.lblw.vphx.phms.common.internal.config.InternalApiConfig;
+import io.netty.channel.ChannelOption;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
+
+/**
+ * WebClient Configuration for Reference data vocab Service
+ *
+ * @see <a
+ *     href="https://gitlab.lblw.ca/lt-sdm/HWPHAR_EHEALTH/dis_messaging_libs/rds-client-lib">rds-client</a>
+ * @see <a
+ *     href="https://hwl-dis-referencedata-sit1.banting.lblw.cloud/swagger-ui/index.html#/">HWL-DIS-REFERENCEDATA
+ *     Service</a>
+ */
+@Configuration
+public class VocabWebClientConfiguration {
+
+  public static final String VOCAB_BUILDER_WEB_CLIENT_QUALIFIER = "vocabBuilderWebClient";
+
+  @Bean
+  @Qualifier(value = VOCAB_BUILDER_WEB_CLIENT_QUALIFIER)
+  public WebClient getVocabBuilderWebClient(InternalApiConfig internalApiConfig) {
+    // timeout configuration
+    HttpClient httpClient =
+        HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, internalApiConfig.getConnectTimeout())
+            .responseTimeout(Duration.ofMillis(internalApiConfig.getResponseTimeout()))
+            .doOnConnected(
+                conn ->
+                    conn.addHandlerLast(
+                            new ReadTimeoutHandler(
+                                internalApiConfig.getResponseTimeout(), TimeUnit.MILLISECONDS))
+                        .addHandlerLast(
+                            new WriteTimeoutHandler(
+                                internalApiConfig.getWriteTimeout(), TimeUnit.MILLISECONDS)));
+
+    return WebClient.builder()
+        .baseUrl(
+            internalApiConfig
+                .getRds()
+                .getBaseUrl()
+                .concat(internalApiConfig.getRds().getVocabPath()))
+        .clientConnector(new ReactorClientHttpConnector(httpClient))
+        .build();
+  }
+}

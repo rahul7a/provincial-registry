@@ -1,0 +1,89 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">95ad207f-7ccb-40a9-9a46-fba12d23e727</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">9a355954-1768-4998-9359-b146855f92bf
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">30b94297b3f249938fe3c3d11300b</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <RCMR_IN010997CAQC_V01 ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="c3cb60d3-f638-4c44-afe0-b4634d400318"/>
+            <creationTime value="20211130191801"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.3.20" extension="RCMR_IN010997CAQC_V01" displayable="true"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="VPHX" extension="ApplicationID" use="BUS"/>
+                    <asAgent xsi:nil="true"/>
+                    <asLocatedEntity xsi:nil="true"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.12" extension="FCO" use="BUS"/>
+                    <name>Fichier des consentements</name>
+                    <asAgent xsi:nil="true"/>
+                    <asLocatedEntity xsi:nil="true"/>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AA"/>
+                <targetMessage>
+                    <id root="1a766bc6-160f-4f92-b31f-9914cb45ac6e"/>
+                </targetMessage>
+            </acknowledgement>
+            <controlActEvent classCode="CACT" moodCode="EVN">
+                <id root="eventRoot" extension="eventCorrelationId" use="BUS"/>
+                <code code="RCMR_TE010997CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <recordTarget typeCode="RCT" contextControlCode="AP">
+                    <patient1 classCode="PAT">
+                        <id root="2.16.840.1.113883.4.56" extension="8000000300" displayable="true"/>
+                        <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                            <name>
+                                <family partType="FAM">Mayer</family>
+                                <given partType="GIV">Fares</given>
+                            </name>
+                        </patientPerson>
+                    </patient1>
+                </recordTarget>
+                <subject xsi:nil="true"/>
+                <subjectOf1 typeCode="SUBJ" contextControlCode="AP" contextConductionInd="false">
+                    <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+                        <code code="VALIDAT"/>
+                        <text>Vous ne pouvez pas utiliser une date de référence inférieure à 2007-01-01.</text>
+                        <statusCode code="completed"/>
+                        <priorityCode code="E"/>
+                        <triggerFor xsi:nil="true"/>
+                    </detectedIssueEvent>
+                </subjectOf1>
+                <subjectOf2 xsi:nil="true"/>
+                <queryAck>
+                    <queryId root="1a766bc6-160f-4f92-b31f-9914cb45ac6e"/>
+                    <queryResponseCode code="QE"/>
+                    <resultTotalQuantity value="0"/>
+                    <resultCurrentQuantity value="0"/>
+                    <resultRemainingQuantity value="0"/>
+                </queryAck>
+                <queryByParameter>
+                    <queryId root="1a766bc6-160f-4f92-b31f-9914cb45ac6e"/>
+                    <parameterList>
+                        <clientID>
+                            <value root="2.16.840.1.113883.4.56" extension="8000000300" displayable="true"/>
+                        </clientID>
+                        <code code="DS"/>
+                        <effectiveTime>
+                            <high value="20061012131212"/>
+                        </effectiveTime>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </RCMR_IN010997CAQC_V01>
+    </s:Body>
+</s:Envelope>

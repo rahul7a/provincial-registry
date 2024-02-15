@@ -1,0 +1,37 @@
+{
+  "responseHeader": {
+    "trackingId": "00f4a78a-0148-4149-9a7e-2da5ad088641",
+    "transactionId": "36f6146f-2fc0-4d7a-a7bf-0699071211d1",
+    "sessionId": "5597e9dafc11448d9f04b356b80e4"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "b0e4cdfc-cd6c-4426-9915-6ce9759f388a",
+    "acknowledgeTypeCode": "AE"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "QE",
+    "resultCurrentQuantity": "0",
+    "resultTotalQuantity": "0",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "VPHXApplicationOID",
+    "eventCorrelationId": "11111111",
+    "provincialLocationSearchCriteria": {
+      "locationName": "string",
+      "provincialLocationIdentifierValue": "213123213",
+      "locationType": "HOSP",
+      "provincialLocationIdentifierType": "PHARMACY_BILLING_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": "string",
+        "postalCode": "string",
+        "city": "string",
+        "country": "string"
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": []
+  }
+}

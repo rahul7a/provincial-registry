@@ -1,0 +1,110 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">e85d12bc-fdbc-4432-a72c-7e6b3f5ed310</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">841f8bb9-f780-4dd7-87c6-2b970d880e5b</cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">5c34fac4fcaf456aa9c1ae3e65c33</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRLO_IN202011CAQC_V01 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0"
+                           xmlns="urn:hl7-org:v3">
+      <id root="ee65139d-d2be-4bab-b719-d505b037681c"/>
+      <creationTime value="20211210183725"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.3.16" extension="PRLO_IN202011CAQC_V01" displayable="true"/>
+      <processingCode code="D"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="senderRoot" extension="senderApplicationId" displayable="true" use="BUS"/>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+          <name>Registre ODS/LDS</name>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+          <id root="1be75dcd-64ac-4665-a0b8-c17f4f5296c4"/>
+        </targetMessage>
+      </acknowledgement>
+      <controlActEvent classCode="CACT" moodCode="EVN">
+        <id root="eventRoot" extension="eventCorrelationId" displayable="true" use="BUS"/>
+        <code code="PRLO_TE202011CA"/>
+        <statusCode code="completed"/>
+        <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="true">
+          <registrationRequest classCode="REG" moodCode="RQO">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+              <serviceDeliveryLocation classCode="SDLOC">
+                <id root="2.16.840.1.113883.4.273" extension="1000002848" displayable="true"/>
+                <code code="PHARM"/>
+                <name>JEAN COUTU PHARMACIE MARC POTVIN</name>
+                <addr use="PHYS">
+                  <streetAddressLine partType="SAL">6605 BOUL DE LA RIVE-SUD S</streetAddressLine>
+                  <additionalLocator partType="ADL">LEVIS, QC</additionalLocator>
+                  <city partType="CTY">LEVIS</city>
+                  <postalCode partType="ZIP">G6V9H5</postalCode>
+                </addr>
+                <statusCode code="NI"/>
+                <location classCode="PLC" determinerCode="INSTANCE">
+                  <code code="BLDG"/>
+                  <mobileInd value="false"/>
+                </location>
+                <indirectAuthority typeCode="INDAUTH">
+                  <territorialAuthority classCode="TERR">
+                    <id root="2.16.124.10.101.1.60.1.10" extension="12" displayable="true"/>
+                  </territorialAuthority>
+                </indirectAuthority>
+              </serviceDeliveryLocation>
+            </subject>
+            <custodian typeCode="CST" contextControlCode="AP">
+              <assignedDevice classCode="ASSIGNED">
+                <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                  <name>Registre ODS/LDS</name>
+                </assignedRepository>
+                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                  <name>Québec</name>
+                </representedRepositoryJurisdiction>
+              </assignedDevice>
+            </custodian>
+          </registrationRequest>
+        </subject>
+        <queryAck>
+          <queryId root="1be75dcd-64ac-4665-a0b8-c17f4f5296c4"/>
+          <queryResponseCode code="OK"/>
+          <resultTotalQuantity value="1"/>
+          <resultCurrentQuantity value="1"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="1be75dcd-64ac-4665-a0b8-c17f4f5296c4"/>
+          <parameterList>
+            <address xsi:nil="true"/>
+            <amendedSinceDateTime xsi:nil="true"/>
+            <eHRRepositoryId xsi:nil="true"/>
+            <locationMobileIndicator xsi:nil="true"/>
+            <locationPlaceType xsi:nil="true"/>
+            <nameContains xsi:nil="true"/>
+            <nearAddress xsi:nil="true"/>
+            <responsibleOrganizationId xsi:nil="true"/>
+            <searchRadius xsi:nil="true"/>
+            <OtherIDs>
+              <value root="2.16.124.10.101.1.60.103" extension="255919" displayable="true"/>
+            </OtherIDs>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRLO_IN202011CAQC_V01>
+  </s:Body>
+</s:Envelope>

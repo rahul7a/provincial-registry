@@ -1,0 +1,43 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">1c085c9e-fa98-4b3e-9f1c-00d6f9a71e83</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">fa31d15a-ae27-4407-aa74-94c97f78be60
+        </cais:TransactionId>
+    </s:Header>
+    <s:Body>
+        <PRLO_IN202011CAQC_V01 ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3">
+            <id root="a31043fe-b5fc-453f-a0d3-13d8ecd2cf13"/>
+            <creationTime value="20220322192116"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.3.16" displayable="true" extension="PRLO_IN202011CAQC_V01"/>
+            <processingCode code="P"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <telecom nullFlavor="NI"/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id displayable="true" extension="senderApplicationId" root="senderRoot" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND">
+                <telecom nullFlavor="NI"/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.4.2.1" extension="CAIS"/>
+                    <name>Couche d’accès à l’information sur la santé</name>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AE"/>
+                <targetMessage>
+                    <id root="9a4b90b4-bf9e-4f49-ac52-3c1e0272f455"/>
+                </targetMessage>
+                <acknowledgementDetail>
+                    <typeCode code="E"/>
+                    <code code="2200"/>
+                    <text>Une erreur technique est survenue pendant le traitement de la requête.</text>
+                </acknowledgementDetail>
+            </acknowledgement>
+        </PRLO_IN202011CAQC_V01>
+    </s:Body>
+</s:Envelope>

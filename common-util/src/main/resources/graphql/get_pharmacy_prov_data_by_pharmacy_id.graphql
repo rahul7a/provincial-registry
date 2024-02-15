@@ -1,0 +1,68 @@
+query storeGetPharmacyProvincialDataByPharmacyIdQuery($pharmacyId: String!) {
+  storeGetPharmacyProvincialDataByPharmacyId(pharmacyId: $pharmacyId) {
+    certificate{
+      certificateReferenceId
+      password
+      privateKeyPassword
+      alias
+      expiryDate
+    }
+    provincialLocation {
+      identifier {
+        type
+        value
+        assigner
+        system
+      }
+      name
+      locationType {
+        provinceCode:province
+        system
+        code
+        codingIdentifier
+        display {
+          language
+          text
+        }
+      }
+      address {
+        streetAddressLine1
+        streetAddressLine2
+        postalCode
+        city
+        country
+      }
+      region
+      parentLocation {
+        identifier {
+          type
+          value
+          assigner
+          system
+        }
+        name
+      }
+      permit {
+        type
+        value
+        assigner
+        system
+      }
+      publicHealthInsurancePermit {
+        type
+        value
+        assigner
+        system
+      }
+      pharmacyBilling {
+        type
+        value
+        assigner
+        system
+      }
+      telecom {
+        number
+      }
+    }
+  }
+}

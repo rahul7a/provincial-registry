@@ -1,0 +1,82 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">668b5150-7a5e-49c8-a1cc-c582d49905d0</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">fd8df938-a586-42b4-912c-8abed6a1b35c
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">d2e6585bb0f04fa4a0960d08c295f</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <PRPA_IN101104CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="c337edb9-725c-4c83-a28f-0b3e97d4e940"/>
+            <creationTime value="20210909162347"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.111" extension="PRPA_IN101104CA" displayable="true"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.840.1.113883.3.40.5.2" extension="TMPT-RI" use="BUS"/>
+                    <agent xsi:nil="true"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                    <name>Registre des usagers</name>
+                    <agent xsi:nil="true"/>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AA"/>
+                <targetMessage>
+                    <id root="2.16.840.1.113883.3.40.1.5"/>
+                </targetMessage>
+            </acknowledgement>
+            <controlActEvent moodCode="EVN">
+                <id root="2.16.840.1.113883.3.40.4.1" extension="564654" use="BUS"/>
+                <code code="PRPA_TE101104CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <subjectOf typeCode="SUBJ" contextControlCode="AP">
+                    <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+                        <code code="MISSMAND"/>
+                        <text>Les critères de recherche de base n'ont pas été saisis. Ces critères sont: le NIU seul, le
+                            NAM seul ou dans un ensemble, le nom, le prénom, la date de naissance et le sexe de
+                            l'individu.
+                        </text>
+                        <statusCode code="completed"/>
+                        <priorityCode code="E"/>
+                        <triggerFor xsi:nil="true"/>
+                    </detectedIssueEvent>
+                </subjectOf>
+                <queryAck>
+                    <queryId root="2.16.840.1.113883.3.40.1.5"/>
+                    <queryResponseCode code="QE"/>
+                    <resultTotalQuantity value="0"/>
+                    <resultCurrentQuantity value="0"/>
+                    <resultRemainingQuantity value="0"/>
+                </queryAck>
+                <queryByParameter>
+                    <queryId root="BB7321A1-3365-44BA-8F7C-AF54EF0F0146"/>
+                    <parameterList>
+                        <administrativeGender>
+                            <value code="F"/>
+                        </administrativeGender>
+                        <deceasedIndicator xsi:nil="true"/>
+                        <deceasedTime xsi:nil="true"/>
+                        <languageCode xsi:nil="true"/>
+                        <multipleBirthIndicator xsi:nil="true"/>
+                        <multipleBirthOrderNumber xsi:nil="true"/>
+                        <personBirthtime>
+                            <value value="19930604"/>
+                        </personBirthtime>
+                        <personalRelationshipCode xsi:nil="true"/>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </PRPA_IN101104CA>
+    </s:Body>
+</s:Envelope>

@@ -1,0 +1,52 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"
+                  soapenv:actor="IntervenantEmetteur"/>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRLO_IN202012CAQC_V01 xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                               th:if="${phmsRequest}" ITSVersion="XML_1.0"
+                               th:with="transmissionWrapper=${phmsRequest.requestBodyTransmissionWrapper}">
+            <id th:if="${transmissionWrapper}" th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+            <creationTime th:if="${transmissionWrapper}"
+                          th:value="${transmissionWrapper.transmissionCreationDateTime}"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.3.17" extension="PRLO_IN202012CAQC_V01" displayable="true"/>
+            <processingCode th:if="${transmissionWrapper}" th:code="${transmissionWrapper.processingCode}"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.11" extension="ODS" use="BUS" displayable="true"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND" th:if="${transmissionWrapper}">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id th:root="${transmissionWrapper.senderRoot}"
+                        th:extension="${transmissionWrapper.senderApplicationId}" use="BUS" displayable="true"/>
+                    <name representation="TXT" mediaType="text/plain"
+                          th:text="${transmissionWrapper.senderApplicationName}"/>
+                </device>
+            </sender>
+            <controlActEvent classCode="CACT" moodCode="EVN" th:if="${phmsRequest.requestControlAct}"
+                             th:with="controlAct=${phmsRequest.requestControlAct}">
+                <id th:root="${controlAct.eventRoot}" th:extension="${controlAct.eventCorrelationId}" use="BUS"
+                    displayable="true"/>
+                <code code="PRLO_TE202012CA"/>
+                <statusCode code="completed"/>
+                <queryByParameter th:if="${phmsRequest.provincialRequestPayload}"
+                                  th:with="criteria=${phmsRequest.provincialRequestPayload}">
+                    <queryId th:if="${transmissionWrapper}"
+                             th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+                    <parameterList>
+                        <recordId>
+                            <value root="2.16.840.1.113883.4.273" th:extension="${criteria.identifier}"
+                                   displayable="true"/>
+                        </recordId>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </PRLO_IN202012CAQC_V01>
+    </soapenv:Body>
+</soapenv:Envelope>

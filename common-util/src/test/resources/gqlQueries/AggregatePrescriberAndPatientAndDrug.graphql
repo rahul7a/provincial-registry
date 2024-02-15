@@ -1,0 +1,114 @@
+query AggregatePrescriberAndPatientAndDrug(
+  $prescriberByIdId: ID!
+  $patientSearchByIdId: ID!
+  $drugSearchByIdId: ID!
+) {
+  prescriberById(id: $prescriberByIdId) {
+    id
+    title {
+      code
+    }
+    firstName
+    lastName
+    licenseProvince {
+      code
+    }
+    specialty {
+      code
+    }
+    prescriberType {
+      code
+      province
+    }
+    licenseNumber
+    storeNumber
+  }
+
+  patientSearchById(id: $patientSearchByIdId) {
+    patientType
+    human {
+       firstName
+       lastName
+       provincialIdentifier:niu
+       dateOfBirth
+       genderOrdinalValue:gender
+    }
+    Id:id
+  }
+
+  drugSearchById(id: $drugSearchByIdId) {
+      tradeName {
+        lang
+        value
+      }
+      id
+      chemicalLabelName {
+        lang
+        value
+      }
+      genCode {
+        code
+        name {
+          lang
+          value
+        }
+      }
+      din
+      upc
+      ingredient {
+        itemCodeableConcept {
+          coding {
+            system
+            code
+            display
+          }
+        }
+        isActive
+        strength {
+          numerator {
+            code
+            value
+          }
+        }
+      }
+      sig {
+        code {
+          lang
+          value
+        }
+        name {
+          lang
+          value
+        }
+      }
+      defaultSig {
+        code {
+          lang
+          value
+        }
+        name {
+          lang
+          value
+        }
+      }
+      storeNum
+      productType {
+        code
+        name {
+          lang
+          value
+        }
+      }
+      routeOfAdministration {
+        code
+        name {
+          lang
+          value
+        }
+      }
+      packDescription {
+        lang
+        value
+      }
+    }
+}

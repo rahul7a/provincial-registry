@@ -1,0 +1,151 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">24926782-6734-44e5-89c2-a289f7fbaa7a</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">10900ee4-bd70-406a-b1db-079931db8f6b
+    </cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">b559e920e2da4251b50585399c083</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRLO_IN202011CAQC_V01 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0"
+                           xmlns="urn:hl7-org:v3">
+      <id root="e0b73d59-476f-4c5b-bc63-9bed684f93d5"/>
+      <creationTime value="20211207224624"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.3.16" extension="PRLO_IN202011CAQC_V01" displayable="true"/>
+      <processingCode code="D"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="senderRoot" extension="senderApplicationId" displayable="true" use="BUS"/>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+          <name>Registre ODS/LDS</name>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+          <id root="f19afdfc-bbaf-49e8-a7f8-11ddb8c9c076"/>
+        </targetMessage>
+      </acknowledgement>
+      <controlActEvent classCode="CACT" moodCode="EVN">
+        <id root="eventRoot" extension="eventCorrelationId" displayable="true" use="BUS"/>
+        <code code="PRLO_TE202011CA"/>
+        <statusCode code="completed"/>
+        <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="true">
+          <registrationRequest classCode="REG" moodCode="RQO">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+              <serviceDeliveryLocation classCode="SDLOC">
+                <id root="2.16.840.1.113883.4.273" extension="1000038958" displayable="true"/>
+                <code code="LAB"/>
+                <name>LABORATOIRE MEDICALE DE LEVIS</name>
+                <addr use="PHYS">
+                  <streetAddressLine partType="SAL">100-4975 BOUL DE LA RIVE-SUD S</streetAddressLine>
+                  <additionalLocator partType="ADL">LEVIS, QC</additionalLocator>
+                  <city partType="CTY">LEVIS</city>
+                  <postalCode partType="ZIP">G6V4Z5</postalCode>
+                </addr>
+                <statusCode code="NI"/>
+                <location classCode="PLC" determinerCode="INSTANCE">
+                  <code code="BLDG"/>
+                  <mobileInd value="false"/>
+                </location>
+                <indirectAuthority typeCode="INDAUTH">
+                  <territorialAuthority classCode="TERR">
+                    <id root="2.16.124.10.101.1.60.1.10" extension="12" displayable="true"/>
+                  </territorialAuthority>
+                </indirectAuthority>
+              </serviceDeliveryLocation>
+            </subject>
+            <custodian typeCode="CST" contextControlCode="AP">
+              <assignedDevice classCode="ASSIGNED">
+                <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                  <name>Registre ODS/LDS</name>
+                </assignedRepository>
+                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                  <name>Québec</name>
+                </representedRepositoryJurisdiction>
+              </assignedDevice>
+            </custodian>
+          </registrationRequest>
+        </subject>
+        <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="true">
+          <registrationRequest classCode="REG" moodCode="RQO">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+              <serviceDeliveryLocation classCode="SDLOC">
+                <id root="2.16.840.1.113883.4.273" extension="6000001969" displayable="true"/>
+                <code code="LAB"/>
+                <name>Eurofins Environex</name>
+                <addr use="PHYS">
+                  <streetAddressLine partType="SAL">2325 Boul Fernand-Lafontaine</streetAddressLine>
+                  <additionalLocator partType="ADL">Longueuil, QC</additionalLocator>
+                  <city partType="CTY">Longueuil</city>
+                  <postalCode partType="ZIP">J4N1N7</postalCode>
+                </addr>
+                <statusCode code="NI"/>
+                <location classCode="PLC" determinerCode="INSTANCE">
+                  <code code="BLDG"/>
+                  <mobileInd value="false"/>
+                </location>
+                <indirectAuthority typeCode="INDAUTH">
+                  <territorialAuthority classCode="TERR">
+                    <id root="2.16.124.10.101.1.60.1.10" extension="16" displayable="true"/>
+                  </territorialAuthority>
+                </indirectAuthority>
+              </serviceDeliveryLocation>
+            </subject>
+            <custodian typeCode="CST" contextControlCode="AP">
+              <assignedDevice classCode="ASSIGNED">
+                <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                  <name>Registre ODS/LDS</name>
+                </assignedRepository>
+                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                  <name>Québec</name>
+                </representedRepositoryJurisdiction>
+              </assignedDevice>
+            </custodian>
+          </registrationRequest>
+        </subject>
+        <queryAck>
+          <queryId root="f19afdfc-bbaf-49e8-a7f8-11ddb8c9c076"/>
+          <queryResponseCode code="OK"/>
+          <resultTotalQuantity value="2"/>
+          <resultCurrentQuantity value="2"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="f19afdfc-bbaf-49e8-a7f8-11ddb8c9c076"/>
+          <parameterList>
+            <address xsi:nil="true"/>
+            <amendedSinceDateTime xsi:nil="true"/>
+            <eHRRepositoryId xsi:nil="true"/>
+            <locationMobileIndicator xsi:nil="true"/>
+            <locationPlaceType xsi:nil="true"/>
+            <nameContains xsi:nil="true"/>
+            <nearAddress xsi:nil="true"/>
+            <recordType>
+              <value code="LAB"/>
+            </recordType>
+            <responsibleOrganizationId xsi:nil="true"/>
+            <searchRadius xsi:nil="true"/>
+            <OtherIDs xsi:nil="true"/>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRLO_IN202011CAQC_V01>
+  </s:Body>
+</s:Envelope>

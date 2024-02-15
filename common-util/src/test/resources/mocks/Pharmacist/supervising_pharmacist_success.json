@@ -1,0 +1,20 @@
+{
+  "data": {
+    "storePostSupervisingPharmacist": {
+      "firstName": "pharmacistFirstName",
+      "lastName": "pharmacistLastName",
+      "idpUserId": "userId",
+      "licenceProvince": "QC",
+      "licenceNumber": "123456789",
+      "state": "Active",
+      "provincialProvider": {
+        "identifier": {
+          "value": "CPN.01001976.QC.PRS"
+        },
+        "providerRole": {
+          "code": "3310000"
+        }
+      }
+    }
+  }
+}

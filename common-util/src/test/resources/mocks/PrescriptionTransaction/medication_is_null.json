@@ -1,0 +1,67 @@
+{
+  "data": {
+    "prescriptionTransaction": {
+      "systemIdentifier": "6377f1d87f29ed06c77eace5",
+      "pharmacyId": "61803942f5043d49f3521df7",
+      "supplyDays": null,
+      "intervalDays": null,
+      "txNumber": null,
+      "serviceDate": "2022-06-08",
+      "dispensedQuantity": null,
+      "workflowAuditHistory": {
+        "auditDetails": []
+      },
+      "virtualBasket": {
+        "promiseTime": "2022-11-20T20:59:00Z"
+      },
+      "prescription": {
+        "systemIdentifier": "6377f1d87f29ed06c77eace6",
+        "patientId": "6377dff9f3d21a1f19daadc8",
+        "rxNumber": null,
+        "dispenseSource": "IN_PERSON",
+        "refillUntilDate": null,
+        "expiryDate": "2024-06-08",
+        "refills": null,
+        "remainingRefills": null,
+        "prescriptionSource": "WRITTEN",
+        "totalAuthorizedQuantity": null,
+        "workflowType": null,
+        "writtenDate": "2022-11-18",
+        "prescribedQuantity": null,
+        "createdBy": null,
+        "prescriptionStatus": null,
+        "trialSupplyFlag": null,
+        "remainingQuantity": null,
+        "pharmacyDetail": null,
+        "sig": null,
+        "sigData": null,
+        "routeOfAdministration": null,
+        "prescriberMetaData": null,
+        "prescriber": {
+          "systemIdentifier": "63201c1dcfc7b5fddef12208",
+          "firstName": "JORGE A.M.",
+          "lastName": "PALACIOS BOIX",
+          "licenseProvince": {
+            "code": "QC"
+          },
+          "licenseNumber": "189100",
+          "activeFlag": true,
+          "phmsProviderData": null,
+          "prescriberType": null
+        }
+      },
+      "patient": {
+        "patientType": 1,
+        "systemId": "6377dff9f3d21a1f19daadc8",
+        "firstName": "Hanns",
+        "lastName": "Patie",
+        "provincialIdentifier": "1900402014",
+        "dateOfBirth": "1978-11-30",
+        "genderOrdinalValue": 1
+      },
+      "compoundDrug": null,
+      "medication": null,
+      "drug": null
+    }
+  }
+}

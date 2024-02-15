@@ -1,0 +1,90 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"
+                  soapenv:actor="IntervenantEmetteur"/>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRPM_IN306010CA xmlns="urn:hl7-org:v3"
+                         th:if="${phmsRequest}" ITSVersion="XML_1.0"
+                         th:with="transmissionWrapper=${phmsRequest.requestBodyTransmissionWrapper}">
+            <!-- ******* Beginning of Transport Wrapper ******* -->
+            <id th:if="${transmissionWrapper}" th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+            <creationTime th:if="${transmissionWrapper}"
+                          th:value="${transmissionWrapper.transmissionCreationDateTime}"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.840.1.113883.3.40.3.1" extension="PRPM_IN306010CA"/>
+            <processingCode th:if="${transmissionWrapper}" th:code="${transmissionWrapper.processingCode}"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <telecom/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.14" extension="RI" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND" th:if="${transmissionWrapper}">
+                <telecom/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id th:root="${transmissionWrapper.senderRoot}"
+                        th:extension="${transmissionWrapper.senderApplicationId}" use="BUS"/>
+                    <name representation="TXT" mediaType="text/plain"
+                          th:text="${transmissionWrapper.senderApplicationName}"/>
+                </device>
+            </sender>
+            <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+            <controlActEvent classCode="CACT" moodCode="EVN" th:if="${phmsRequest.requestControlAct}"
+                             th:with="controlAct=${phmsRequest.requestControlAct}">
+                <id th:root="${controlAct.eventRoot}" th:extension="${controlAct.eventCorrelationId}" use="BUS"/>
+                <code code="PRPM_IN306010CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <!-- ******* Beginning of Payload ******* -->
+                <queryByParameter th:if="${phmsRequest.provincialRequestPayload}"
+                                  th:with="criteria=${phmsRequest.provincialRequestPayload}">
+                    <queryId th:if="${transmissionWrapper}"
+                             th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+                    <parameterList>
+                        <administrativeGender th:if="${criteria.gender}">
+                            <value th:code="${criteria.gender}"/>
+                        </administrativeGender>
+                        <dOB th:if="${criteria.dateOfBirth}">
+                            <value th:text="${criteria.dateOfBirth}"/>
+                        </dOB>
+                        <includeHistoryIndicator>
+                            <value value="false"/>
+                        </includeHistoryIndicator>
+                        <jurisdiction>
+                            <value code="QC"/>
+                        </jurisdiction>
+                        <name th:if="${criteria.firstName != null or criteria.lastName != null}">
+                            <value use="L">
+                                <family th:if="${criteria.lastName}" th:text="${criteria.lastName}"></family>
+                                <given th:if="${criteria.firstName}" th:text="${criteria.firstName}"></given>
+                            </value>
+                        </name>
+                        <providerID th:if="${providerIDRoot != null and providerIDExtension != null}">
+                            <value th:root="${providerIDRoot}" th:extension="${providerIDExtension}"/>
+                        </providerID>
+                        <qualification th:if="${providerRoleSpecialityCode != null}">
+                            <value th:code="${providerRoleSpecialityCode}"/>
+                        </qualification>
+                        <roleType th:if="${providerRoleCode != null}">
+                            <value th:code="${providerRoleCode}"/>
+                        </roleType>
+                        <serviceDeliveryLocationAddress
+                                th:if="${criteria.providerRequestAddress != null and (criteria.providerRequestAddress.city != null or criteria.providerRequestAddress.postalCode != null)}"
+                                th:with="address=${criteria.providerRequestAddress}">
+                            <value>
+                                <city th:if="${address.city}" th:text="${address.city}"></city>
+                                <postalCode th:if="${address.postalCode}" th:text="${address.postalCode}"></postalCode>
+                            </value>
+                        </serviceDeliveryLocationAddress>
+                    </parameterList>
+                </queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+            </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+        </PRPM_IN306010CA>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,85 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">feafb8cc-29b1-4910-b477-c2dab6b960dc</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">49c67284-c136-4d68-87c0-19f39bf35f3b
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">3848172c941d422dbc4c577e0a9ba</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <PRPA_IN101104CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="aee4d58a-f5de-4a8a-b9f9-66104cbefa86"/>
+            <creationTime value="20210909163114"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.111" extension="PRPA_IN101104CA" displayable="true"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.840.1.113883.3.40.5.2" extension="TMPT-RI" use="BUS"/>
+                    <agent xsi:nil="true"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                    <name>Registre des usagers</name>
+                    <agent xsi:nil="true"/>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AE"/>
+                <targetMessage>
+                    <id root="2.16.840.1.113883.3.40.1.5"/>
+                </targetMessage>
+                <acknowledgementDetail typeCode="E">
+                    <code code="SYN102"/>
+                    <text>Data type error</text>
+                    <location>PRPA_IN101103CA/controlActEvent/queryByParameter/parameterList/personName/value/given
+                    </location>
+                </acknowledgementDetail>
+            </acknowledgement>
+            <controlActEvent moodCode="EVN">
+                <id root="2.16.840.1.113883.3.40.4.1" extension="564654" use="BUS"/>
+                <code code="PRPA_TE101104CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <queryAck>
+                    <queryId root="2.16.840.1.113883.3.40.1.5"/>
+                    <queryResponseCode code="QE"/>
+                    <resultTotalQuantity value="0"/>
+                    <resultCurrentQuantity value="0"/>
+                    <resultRemainingQuantity value="0"/>
+                </queryAck>
+                <queryByParameter>
+                    <queryId root="BB7321A1-3365-44BA-8F7C-AF54EF0F0146"/>
+                    <parameterList>
+                        <administrativeGender>
+                            <value code="F"/>
+                        </administrativeGender>
+                        <clientId>
+                            <value root="2.16.124.10.101.1.60.100" extension="NOMP78571314"/>
+                        </clientId>
+                        <deceasedIndicator xsi:nil="true"/>
+                        <deceasedTime xsi:nil="true"/>
+                        <languageCode xsi:nil="true"/>
+                        <multipleBirthIndicator xsi:nil="true"/>
+                        <multipleBirthOrderNumber xsi:nil="true"/>
+                        <personBirthtime>
+                            <value value="19780713"/>
+                        </personBirthtime>
+                        <personName>
+                            <value>
+                                <given partType="GIV">NomavectrentecaractresmaximumXXXXXXXXXZ</given>
+                                <family partType="FAM">PrnomvingtcaractreXXXXZ</family>
+                            </value>
+                        </personName>
+                        <personalRelationshipCode xsi:nil="true"/>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </PRPA_IN101104CA>
+    </s:Body>
+</s:Envelope>

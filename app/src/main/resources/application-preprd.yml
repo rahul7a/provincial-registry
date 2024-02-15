@@ -1,0 +1,44 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://phms-srv-db-usr-preprd:${sm://projects/vph-phms-preprd/secrets/phms-srv-db-usr-pwd}@vph-shared-preprd-pri.xynd2.mongodb.net/phmsDB-preprd?retryWrites=true&w=majority
+      auto-index-creation: true
+  redis:
+    host: 10.230.105.131
+    port: 6379
+
+provinces:
+  quebec:
+    request:
+      sender:
+        processingCode: D
+
+services:
+  internal:
+    responseTimeout: 2000
+    connectTimeout: 2000
+    readTimeout: 2000
+    writeTimeout: 2000
+    graphql:
+      url: https://vph-preprd.banting.lblw.cloud/preprd/aggregate
+    objectStorage:
+      baseUrl: https://vph-lwr.banting.lblw.cloud/preprd/objectstorage/
+      objectStorePath: vphx/objectstore/{refId}
+    rds:
+      schedule:
+        cron: 0 0 3 1/1 * ?
+      baseUrl: http://hwl-dis-referencedata.hwl-dis-preprd1.svc.cluster.local:8080/
+      actuator: /actuator/health
+      vocabPath: v1/lookup/VOCAB/{vocabType}
+    iam:
+      clientId: ${sm://projects/vph-phms-preprd/secrets/preprd-b2c-client}
+      clientSecret: ${sm://projects/vph-phms-preprd/secrets/preprd-b2c-secret}
+      environment: dev
+    dps:
+      baseUrl: https://vph-preprd.banting.lblw.cloud/preprd/dataprotection/
+      paths:
+        deidentifyBlobPath: deidentify/blob
+        reidentifyBlobPath: reidentify/blob
+        
+rds:
+  baseUrl: http://hwl-dis-referencedata.hwl-dis-preprd1.svc.cluster.local:8080/

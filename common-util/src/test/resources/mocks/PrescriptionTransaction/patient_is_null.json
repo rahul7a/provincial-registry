@@ -1,0 +1,153 @@
+{
+  "data": {
+    "prescriptionTransaction": {
+      "systemIdentifier": "62a0e374ad23912353ee9371",
+      "pharmacyId": "97656",
+      "supplyDays": "30",
+      "intervalDays": "30",
+      "txNumber": "70000000",
+      "serviceDate": "2022-06-08",
+      "createdDate": "2023-01-19T14:34:01.345Z",
+      "dispensedQuantity": "30",
+      "workflowAuditHistory": {
+        "auditDetails": [],
+        "auditUserList": []
+      },
+      "virtualBasket": {
+        "promiseTime": "2022-06-08T04:00:00Z"
+      },
+      "prescription": {
+        "systemIdentifier": "62a0e374ad23912353ee9372",
+        "patientId": "62a0e365c3a71822a9a7f4ab",
+        "rxNumber": "9000000",
+        "prescriberMetaData": {
+          "prescriberId": "62b1d7a4289f843ce3aa0bf4",
+          "prescriberProvincialLocationIdentifier": "",
+          "prescriberProvincialName": ""
+        },
+        "prescriber": {
+          "firstName": "Francois",
+          "lastName": "Doug",
+          "systemIdentifier": "616ee78eeec0906382d6ff9b",
+          "licenseNumber": "JK890765",
+          "prescriberType": {
+            "code": "1940000"
+          },
+          "licenseProvince": {
+            "code": "QC"
+          },
+          "phmsProviderData": null
+        },
+        "refillUntilDate": null,
+        "expiryDate": "2024-06-08",
+        "refills": "2",
+        "dispenseSource": "IN_PERSON",
+        "totalAuthorizedQuantity": "270",
+        "workflowType": "SUBMIT",
+        "unit": "MG",
+        "writtenDate": "2022-06-08",
+        "prescribedQuantity": "90",
+        "createdBy": null,
+        "pharmacyDetail": null,
+        "remainingQuantity": "20",
+        "sig": {
+          "code": [
+            "Take",
+            "as",
+            "direct"
+          ],
+          "defaultSigFlag": false,
+          "language": "en"
+        }
+      },
+      "patient": {
+        "patientType": null,
+        "human": null,
+        "id": null
+      },
+      "drug": {
+        "routeOfAdministration": {
+          "code": "ORAL"
+        }
+      },
+      "compoundDrug": {
+        "name": [
+          {
+            "lang": "en",
+            "value": "Jacob GenRx CMP"
+          },
+          {
+            "lang": "fr",
+            "value": "Jacob GenRx CMP"
+          }
+        ],
+        "routeOfAdministration": {
+          "code": ""
+        },
+        "compoundType": {
+          "privateInsurance": {
+            "code": "0"
+          }
+        },
+        "compoundPricing": {
+          "totalDispensedQtyUOM": {
+            "code": "DSK"
+          }
+        },
+        "ingredient": [
+          {
+            "din": "56326737",
+            "upc": "32677646737843",
+            "tradeName": [
+              {
+                "lang": "en",
+                "value": "savetest671"
+              },
+              {
+                "lang": "fr",
+                "value": "savetest671"
+              }
+            ],
+            "type": "DRUG",
+            "ingredientId": "62fb942358eefc26043ee7e3"
+          },
+          {
+            "din": null,
+            "upc": null,
+            "tradeName": [
+              {
+                "lang": "en",
+                "value": "JACOB DEV COMPOUND UNIT"
+              },
+              {
+                "lang": "fr",
+                "value": "JACOB DEV COMPOUND UNIT"
+              }
+            ],
+            "type": "COMPOUND",
+            "ingredientId": "62d09a1ddd7e7d53d8d1d121"
+          }
+        ],
+        "drugIngredients": null
+      },
+      "medication": {
+        "din": "02269080",
+        "systemIdentifier": "60e74a9d755afc66f878afc0",
+        "tradeName": "APO-ALLOPURINOL",
+        "productType": "DRG",
+        "legalStatus": "9",
+        "source": "1",
+        "category": "CHRONIC",
+        "therapeuticIndication": [
+          {
+            "systemIdentifier": "62a0e384ad23912353ee9378",
+            "cdcoId": "5250000",
+            "source": "1",
+            "therapeuticObjective": null
+          }
+        ],
+        "form": "TAB"
+      }
+    }
+  }
+}

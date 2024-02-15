@@ -1,0 +1,361 @@
+{
+  "data": {
+    "prescriptionTransaction": {
+      "systemIdentifier": "62a0e374ad23912353ee9371",
+      "supplyDays": "30",
+      "intervalDays": "30",
+      "product": {
+        "indications": [
+          {
+            "therapeuticObjective": null,
+            "source": "1",
+            "id": "63fef25294ece550c90563d1",
+            "diagCode": "CONL",
+            "diagCodeData": {
+              "description": [
+                {
+                  "lang": "en",
+                  "value": "LENNOX-GASTAUT SYNDROME"
+                },
+                {
+                  "lang": "fr",
+                  "value": "SYNDROME DE LENNOX-GASTAUT"
+                }
+              ],
+              "diagCode": "CONL",
+              "isActive": true
+            }
+          }
+        ]
+      },
+      "txNumber": "70000000",
+      "serviceDate": "2022-06-08",
+      "createdDate": "2023-01-19T14:34:01.345Z",
+      "dispensedQuantity": "30",
+      "workflowAuditHistory": {
+        "auditDetails": [
+          {
+            "userDetails": [
+              {
+                "actDateTime": "2022-11-30T22:11:20.447Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              }
+            ],
+            "workflowAction": {
+              "action": "APPROVE",
+              "workFlowStatus": "PRODUCT_FILLING"
+            }
+          },
+          {
+            "userDetails": [
+              {
+                "actDateTime": "2022-11-30T22:11:24.833Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              }
+            ],
+            "workflowAction": {
+              "action": "APPROVE",
+              "workFlowStatus": "PRODUCT_VERIFICATION"
+            }
+          },
+          {
+            "userDetails": [
+              {
+                "actDateTime": "2023-03-01T05:10:04.638Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              },
+              {
+                "actDateTime": "2023-03-01T05:10:40.550Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              },
+              {
+                "actDateTime": "2023-03-01T05:12:05.694Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              },
+              {
+                "actDateTime": "2023-03-01T05:55:30.596Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": null,
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              },
+              {
+                "actDateTime": "2023-03-01T05:59:10.564Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": [],
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              },
+              {
+                "actDateTime": "2023-03-01T06:32:51.822Z",
+                "errors": null,
+                "rejectReason": null,
+                "updatedFields": [],
+                "user": {
+                  "_id": "540f0368-81a8-4db6-80e7-c0373cbce329",
+                  "roles": [
+                    "PHARMACIST"
+                  ]
+                }
+              }
+            ],
+            "workflowAction": {
+              "action": "APPROVE",
+              "workFlowStatus": "CLINICAL_VERIFICATION"
+            }
+          }
+        ],
+        "auditUserList": [
+          {
+            "auditUserData": {
+              "licenceNumber": "1246",
+              "licenceProvince": "QC",
+              "user": {
+                "firstName": "VPHX",
+                "idpUserId": "540f0368-81a8-4db6-80e7-c0373cbce328",
+                "lastName": "QC1"
+              },
+              "state": "ACTIVE"
+            }
+          }
+        ]
+      },
+      "virtualBasket": {
+        "promiseTime": "2022-06-08T04:00:00Z"
+      },
+      "prescription": {
+        "systemIdentifier": "62a0e374ad23912353ee9372",
+        "patientId": "62a0e365c3a71822a9a7f4ab",
+        "pharmacyId": "97656",
+        "rxNumber": "9000000",
+        "prescriberMetaData": {
+          "prescriberId": "62b1d7a4289f843ce3aa0bf4",
+          "prescriberProvincialLocationIdentifier": "1000016632",
+          "prescriberProvincialName": "PAVILLON DU CENTRE HOSPITALIER",
+          "outOfProvince": false
+        },
+        "prescriber": {
+          "firstName": "Francois",
+          "lastName": "Doug",
+          "systemIdentifier": "616ee78eeec0906382d6ff9b",
+          "licenseNumber": "JK890765",
+          "prescriberType": {
+            "code": "1940000"
+          },
+          "licenseProvince": {
+            "code": "QC"
+          },
+          "phmsProviderData": null
+        },
+        "refillUntilDate": null,
+        "expiryDate": "2024-06-08",
+        "refills": "2",
+        "dispenseSource": "IN_PERSON",
+        "totalAuthorizedQuantity": "270",
+        "workflowType": "SUBMIT",
+        "unit": "MG",
+        "writtenDate": "2022-06-08",
+        "prescribedQuantity": "90",
+        "createdBy": null,
+        "pharmacyDetail": null,
+        "remainingQuantity": "20",
+        "sig": {
+          "code": [
+            "T",
+            "1",
+            "CP"
+          ],
+          "defaultSigFlag": false,
+          "language": "en",
+          "descriptionEn": "TAKE 1 CAPSULE",
+          "descriptionFr": "PRENDRE 1 CAPSULE"
+        }
+      },
+      "patient": {
+        "patientType": 1,
+        "firstName": "Lester",
+        "lastName": "Keeling",
+        "provincialIdentifier": "1000402014",
+        "dateOfBirth": "2000-01-01",
+        "genderOrdinalValue": 1,
+        "systemId": "62a0e365c3a71822a9a7f4ab"
+      },
+      "drug": {
+        "routeOfAdministration": {
+          "code": "ORAL"
+        },
+        "tradeName": [
+          {
+            "lang": "en",
+            "value": "Pms-Ramipril"
+          },
+          {
+            "lang": "fr",
+            "value": null
+          }
+        ],
+        "amount": {
+          "denominator": {
+            "code": "CAP",
+            "value": "100"
+          }
+        }
+      },
+      "compoundDrug": {
+        "name": [
+          {
+            "lang": "en",
+            "value": "Jacob GenRx CMP"
+          },
+          {
+            "lang": "fr",
+            "value": "Jacob GenRx CMP"
+          }
+        ],
+        "routeOfAdministration": {
+          "code": ""
+        },
+        "compoundType": {
+          "privateInsurance": {
+            "code": "0"
+          }
+        },
+        "compoundPricing": {
+          "totalDispensedQtyUOM": {
+            "code": "DSK"
+          }
+        },
+        "ingredient": [
+          {
+            "din": "56326737",
+            "upc": "32677646737843",
+            "tradeName": [
+              {
+                "lang": "en",
+                "value": "savetest671"
+              },
+              {
+                "lang": "fr",
+                "value": "savetest671"
+              }
+            ],
+            "type": "DRUG",
+            "ingredientId": "62fb942358eefc26043ee7e3"
+          },
+          {
+            "din": null,
+            "upc": null,
+            "tradeName": [
+              {
+                "lang": "en",
+                "value": "JACOB DEV COMPOUND UNIT"
+              },
+              {
+                "lang": "fr",
+                "value": "JACOB DEV COMPOUND UNIT"
+              }
+            ],
+            "type": "COMPOUND",
+            "ingredientId": "62d09a1ddd7e7d53d8d1d121"
+          }
+        ],
+        "drugIngredients": [
+          {
+            "din": "56326737",
+            "upc": "32677646737843",
+            "ingredientId": "62fb942358eefc26043ee7e3",
+            "tradeName": "AAA",
+            "quantity": 8.0,
+            "type": "DRUG"
+          },
+          {
+            "din": "02269080",
+            "upc": "999999999999",
+            "ingredientId": "6294ba6adf936014dd1c52cb",
+            "tradeName": "AAA",
+            "quantity": 10.0,
+            "uom": "CAP",
+            "type": "DRUG"
+          },
+          {
+            "din": "03269080",
+            "upc": "999999999999",
+            "ingredientId": "610058c7b37280734200177f",
+            "tradeName": "AAA",
+            "quantity": 12.0,
+            "uom": "CAP",
+            "type": "DRUG"
+          }
+        ]
+      },
+      "medication": {
+        "din": "02269080",
+        "systemIdentifier": "60e74a9d755afc66f878afc0",
+        "tradeName": "APO-ALLOPURINOL",
+        "productType": "DRG",
+        "legalStatus": "9",
+        "source": "1",
+        "category": "CHRONIC",
+        "therapeuticIndication": [
+          {
+            "systemIdentifier": "62a0e384ad23912353ee9378",
+            "cdcoId": "5250000",
+            "source": "1",
+            "therapeuticObjective": null
+          }
+        ],
+        "form": "TAB"
+      }
+    }
+  }
+}

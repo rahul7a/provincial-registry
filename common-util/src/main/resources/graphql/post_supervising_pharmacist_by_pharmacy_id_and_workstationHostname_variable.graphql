@@ -1,0 +1,6 @@
+{
+  "input": {
+    "pharmacyId": "fetchPharmacyId",
+    "workstationHostname": "workstationHostnameId"
+  }
+}

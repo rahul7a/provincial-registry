@@ -1,0 +1,85 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+  mongodb:
+    embedded:
+      version: 4.4.11
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+provinces:
+  quebec:
+    request:
+      webclient:
+        responseMemoryLimitInBytes: 1000000
+        responseTimeOut: 2000
+        connectionTimeOut: 2000
+        readTimeOut: 1000
+        writeTimeOut: 1000
+      sender:
+        pharmacyGroup: ${PHARMACY_GROUP:2.16.124.113618.1}
+        pharmacyLocationId: ${PHARMACY_LOCATION_ID:9999999999}
+        applicationVersionNumber: ${APPLICATION_VERSION_NUMBER:1.0.0.0}
+        extension: ${SENDER_APPLICATION_NAME:Vision Pharmaprix}
+        name: ${SENDER_APPLICATION_ID:VPHX}
+        processingcode: "D"
+      security:
+        certificate:
+          #TODO : replace with fake data
+          alias: tq-a30b0288-f3b6-42f3-bc11-cc6ff2308af6
+          password: 1234
+          schedule:
+            cron: 0 0 3 1/1 * ?
+          defaultLocation: certs/test.pfx
+      transaction:
+        findCandidateQuery:
+          uri: findCandidateQueryUri
+          header:
+            soapAction: findCandidateQuerySOAPAction
+            value: findCandidateQueryHeaderValue
+        findProviderQuery:
+          uri: findProviderQueryUri
+          header:
+            soapAction: findProviderQuerySOAPAction
+            value: findProviderQueryHeaderValue
+        getPatientConsent:
+          uri: getPatientConsentUri
+          header:
+            soapAction: getPatientConsentSOAPAction
+            value: getPatientConsentHeaderValue
+        findLocationSummary:
+          uri: findLocationSummaryUri
+          header:
+            soapAction: findLocationSummarySOAPAction
+            value: findLocationSummaryHeaderValue
+        findLocationDetails:
+          uri: findLocationDetailsUri
+          header:
+            soapAction: findLocationDetailsSOAPAction
+            value: findLocationDetailsHeaderValue
+
+services:
+  internal:
+    iam:
+      clientId: test-clientid
+      clientSecret: test-clientsecret
+      applicationName: test-phms
+      environment: test-environment
+    rds:
+      enabled: true
+      schedule:
+        cron: 0 0 3 1/1 * ?
+      baseUrl: http://hwl-dis-referencedata.hwl-dis-sit1.svc.cluster.local:8080/
+      actuator: /actuator/health
+      vocabPath: v1/lookup/VOCAB/{vocabType}
+    dps:
+      baseUrl: test-dps-url
+      paths:
+        deidentifyBlobPath: deidentify/blob
+        reidentifyBlobPath: reidentify/blob
+      enableCompression: PATIENT_SEARCH, PRESCRIPTION_TRANSACTION_SEARCH
+      enableEncryption: PATIENT_SEARCH, PATIENT_CONSENT
+rds:
+  baseUrl: http://hwl-dis-referencedata.hwl-dis-sit1.svc.cluster.local:8080/

@@ -1,0 +1,66 @@
+{
+  "responseHeader": {
+    "trackingId": "607ae082-0082-4dd7-9962-fc18cc2dc3fe",
+    "transactionId": "a2a222a0-f433-4ea9-9133-71aa586cbbc8",
+    "sessionId": "fb76f0f829cf44ee9dddfa120b899"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "d3e7bd23-3f27-4224-a2e5-bf1902021387",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "1",
+    "resultTotalQuantity": "1",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationDetailsCriteria": {
+      "identifier": "6000001809"
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocation": {
+      "name": "Centre de réadaptation en déficience intellectuelle",
+      "region": "0",
+      "identifier": {
+        "value": "6000001809",
+        "assigner": "Qc",
+        "system": "NIU-O",
+        "type": "LOCATION"
+      },
+      "publicHealthInsurancePermit": {
+        "value": "21548741",
+        "assigner": "Qc",
+        "system": "MSSS",
+        "type": "LOCATION_PUBLIC_HEALTHCARE_PERMIT_NUMBER"
+      },
+      "permit": null,
+      "pharmacyBilling": null,
+      "parentLocation": {
+        "name": "",
+        "identifier": {
+          "value": "0",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "PARENT_LOCATION"
+        }
+      },
+      "locationType": {
+        "code": "RH"
+      },
+      "address": {
+        "streetAddressLine1": "7843 Rue des Santolines",
+        "streetAddressLine2": "QUEBEC, QC",
+        "postalCode": "G1G0G3",
+        "city": "QUEBEC"
+      },
+      "telecom": {
+        "number": "6479490254"
+      }
+    }
+  }
+}

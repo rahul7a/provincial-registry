@@ -1,0 +1,105 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+    <soapenv:Header>
+        <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd"
+                  soapenv:actor="IntervenantEmetteur"/>
+    </soapenv:Header>
+    <soapenv:Body Id="_0">
+        <PRPA_IN101103CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         th:if="${phmsRequest}" ITSVersion="XML_1.0"
+                         th:with="transmissionWrapper=${phmsRequest.requestBodyTransmissionWrapper}">
+            <!-- ******* Beginning of Transport Wrapper ******* -->
+            <id th:if="${transmissionWrapper}" th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+            <creationTime th:if="${transmissionWrapper}"
+                          th:value="${transmissionWrapper.transmissionCreationDateTime}"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.110" extension="PRPA_IN101103CA" displayable="true"/>
+            <processingCode th:if="${transmissionWrapper}" th:code="${transmissionWrapper.processingCode}"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                </device>
+            </receiver>
+            <sender typeCode="SND" th:if="${transmissionWrapper}">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id th:root="${transmissionWrapper.senderRoot}"
+                        th:extension="${transmissionWrapper.senderApplicationId}" use="BUS"/>
+                    <name representation="TXT" mediaType="text/plain"
+                          th:text="${transmissionWrapper.senderApplicationName}"/>
+                </device>
+            </sender>
+            <!-- ******* END OF Transport Wrapper ******* -->
+            <!-- ******* Beginning of Control Act ******* -->
+            <controlActEvent classCode="CACT" moodCode="EVN" th:if="${phmsRequest.requestControlAct}"
+                             th:with="controlAct=${phmsRequest.requestControlAct}">
+                <id th:root="${controlAct.eventRoot}" th:extension="${controlAct.eventCorrelationId}" use="BUS"/>
+                <code code="PRPA_TE101103CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <!-- ******* Beginning of Payload ******* -->
+                <queryByParameter th:if="${phmsRequest.provincialRequestPayload}"
+                                  th:with="criteria=${phmsRequest.provincialRequestPayload}">
+                    <queryId th:if="${transmissionWrapper}"
+                             th:root="${transmissionWrapper.transmissionUniqueIdentifier}"/>
+                    <parameterList>
+                        <administrativeGender th:if="${criteria.gender}">
+                            <value th:code="${criteria.gender}"/>
+                        </administrativeGender>
+                        <clientId
+                                th:if="${criteria.patientIdentifier != null or criteria.provincialHealthNumber != null}">
+                            <value th:if="${criteria.patientIdentifier}" root="2.16.840.1.113883.4.56"
+                                   th:extension="${criteria.patientIdentifier}"/>
+                            <value th:if="${criteria.provincialHealthNumber}" root="2.16.124.10.101.1.60.100"
+                                   th:extension="${criteria.provincialHealthNumber}"/>
+                        </clientId>
+                        <personAddress th:if="${criteria.address}" th:with="address=${criteria.address}">
+                            <value th:if="${address}">
+                                <streetAddressLine representation="TXT" mediaType="text/plain" partType="SAL"
+                                                   th:text="${address.streetAddressLine}"/>
+                                <city representation="TXT" mediaType="text/plain" partType="CTY"
+                                      th:text="${address.city}"/>
+                                <state representation="TXT" mediaType="text/plain" partType="STA"
+                                       th:text="${address.province}"/>
+                                <country representation="TXT" mediaType="text/plain" partType="CNT"
+                                         th:text="${address.country}"/>
+                                <postalCode representation="TXT" mediaType="text/plain" partType="ZIP"
+                                            th:text="${address.postalCode}"/>
+                            </value>
+                        </personAddress>
+                        <personBirthtime th:if="${formattedDateOfBirth}">
+                            <value th:value="${formattedDateOfBirth}"/>
+                        </personBirthtime>
+                        <personName th:if="${criteria.firstName != null or criteria.lastName != null}">
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV"
+                                       th:text="${criteria.firstName}"/>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM"
+                                        th:text="${criteria.lastName}"/>
+                            </value>
+                        </personName>
+                        <mothersMaidenName
+                                th:if="${criteria.motherFirstName != null or criteria.motherLastName != null}">
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV"
+                                       th:text="${criteria.motherFirstName}"/>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM"
+                                        th:text="${criteria.motherLastName}"/>
+                            </value>
+                        </mothersMaidenName>
+                        <fathersName th:if="${criteria.fatherFirstName != null or criteria.fatherLastName != null}">
+                            <value>
+                                <given representation="TXT" mediaType="text/plain" partType="GIV"
+                                       th:text="${criteria.fatherFirstName}"/>
+                                <family representation="TXT" mediaType="text/plain" partType="FAM"
+                                        th:text="${criteria.fatherLastName}"/>
+                            </value>
+                        </fathersName>
+                    </parameterList>
+                </queryByParameter>
+                <!-- ******* END OF of Payload ******* -->
+            </controlActEvent>
+            <!-- ******* END OF Control Act ******* -->
+        </PRPA_IN101103CA>
+    </soapenv:Body>
+</soapenv:Envelope>

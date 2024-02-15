@@ -1,0 +1,121 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">d0317399-ee24-444d-b2d4-6c7e2402bce9</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">5f1d1147-e99e-4f51-a3c4-ad29ad4eccab
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">7871317469fc425c8fb77d8c98b2b</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <PRPA_IN101104CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="66e5ec06-8c87-44f8-8332-b8921b9e335a"/>
+            <creationTime value="20211020192623"/>
+            <responseModeCode code="I"/>
+            <versionCode code="NE2006"/>
+            <interactionId root="2.16.124.10.101.1.60.5.2.111" extension="PRPA_IN101104CA" displayable="true"/>
+            <processingCode code="D"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="AL"/>
+            <receiver typeCode="RCV">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="VPHXApplicationOID" extension="VPHXApplicationShortName" use="BUS"/>
+                    <agent xsi:nil="true"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.10" extension="RU" use="BUS"/>
+                    <name>Registre des usagers</name>
+                    <agent xsi:nil="true"/>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AE"/>
+                <targetMessage>
+                    <id/>
+                </targetMessage>
+                <acknowledgementDetail typeCode="E">
+                    <code code="SYN102"/>
+                    <text>Data type error</text>
+                    <location>
+                        PRPA_IN101103CA/controlActEvent/queryByParameter/parameterList/personBirthTime/value[@value]
+                    </location>
+                </acknowledgementDetail>
+                <acknowledgementDetail typeCode="E">
+                    <code code="SYN102"/>
+                    <text>Data type error</text>
+                    <location>
+                        PRPA_IN101103CA/controlActEvent/queryByParameter/parameterList/mothersMaidenName/value/given
+                    </location>
+                </acknowledgementDetail>
+                <acknowledgementDetail typeCode="E">
+                    <code code="SYN102"/>
+                    <text>Data type error</text>
+                    <location>PRPA_IN101103CA/controlActEvent/queryByParameter/parameterList/fathersName/value/given
+                    </location>
+                </acknowledgementDetail>
+            </acknowledgement>
+            <controlActEvent moodCode="EVN">
+                <id root="VPHXApplicationOID" extension="123" use="BUS"/>
+                <code code="PRPA_TE101104CA" codeSystem="2.16.840.1.113883.11.19427"/>
+                <statusCode code="completed"/>
+                <queryAck>
+                    <queryId/>
+                    <queryResponseCode code="QE"/>
+                    <resultTotalQuantity value="0"/>
+                    <resultCurrentQuantity value="0"/>
+                    <resultRemainingQuantity value="0"/>
+                </queryAck>
+                <queryByParameter>
+                    <queryId/>
+                    <parameterList>
+                        <administrativeGender>
+                            <value code="F"/>
+                        </administrativeGender>
+                        <deceasedIndicator xsi:nil="true"/>
+                        <deceasedTime xsi:nil="true"/>
+                        <languageCode xsi:nil="true"/>
+                        <multipleBirthIndicator xsi:nil="true"/>
+                        <multipleBirthOrderNumber xsi:nil="true"/>
+                        <personAddress>
+                            <value>
+                                <streetAddressLine partType="SAL">68 av Laval</streetAddressLine>
+                                <city partType="CTY">Baie-Comeau</city>
+                                <state partType="STA">MB</state>
+                                <country partType="CNT">CA</country>
+                                <postalCode partType="ZIP">G4Z1R2</postalCode>
+                            </value>
+                        </personAddress>
+                        <personBirthtime>
+                            <value value="202306105"/>
+                        </personBirthtime>
+                        <personName>
+                            <value>
+                                <given partType="GIV">BB De Hlose</given>
+                                <family partType="FAM">Braun</family>
+                            </value>
+                        </personName>
+                        <mothersMaidenName>
+                            <value>
+                                <given partType="GIV">
+                                    dghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhfhhhhhg
+                                </given>
+                                <family partType="FAM">Poulneeeeeeee</family>
+                            </value>
+                        </mothersMaidenName>
+                        <fathersName>
+                            <value>
+                                <given partType="GIV">
+                                    dtyrdtyfgfytfyfyftyrtrtyftftytyrtrtyrtyhggvfgdthtdrtytftdghtfttftrytrtyrtyfytf
+                                </given>
+                                <family partType="FAM">Braneeeeee</family>
+                            </value>
+                        </fathersName>
+                        <personalRelationshipCode xsi:nil="true"/>
+                    </parameterList>
+                </queryByParameter>
+            </controlActEvent>
+        </PRPA_IN101104CA>
+    </s:Body>
+</s:Envelope>

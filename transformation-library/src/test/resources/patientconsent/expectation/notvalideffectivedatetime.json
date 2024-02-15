@@ -1,0 +1,28 @@
+{
+  "responseHeader": {
+    "transactionId": "9a355954-1768-4998-9359-b146855f92bf",
+    "sessionId": "30b94297b3f249938fe3c3d11300b",
+    "trackingId": "95ad207f-7ccb-40a9-9a46-fba12d23e727"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "1a766bc6-160f-4f92-b31f-9914cb45ac6e",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "QE",
+    "resultCurrentQuantity": "0",
+    "resultTotalQuantity": "0",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": [
+    {
+      "eventCode": "VALIDAT",
+      "eventText": "Vous ne pouvez pas utiliser une date de référence inférieure à 2007-01-01."
+    }
+  ],
+  "provincialResponsePayload": {
+    "consentToken": null,
+    "consentValidityStartDateTime": null,
+    "consentValidityEndDateTime": null
+  }
+}

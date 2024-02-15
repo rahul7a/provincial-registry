@@ -1,0 +1,4 @@
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: info
+    com.lblw.vphx.phms.rules.config: info

@@ -1,0 +1,20 @@
+mutation StorePostSupervisingPharmacist(
+  $input: StorePostSupervisingPharmacistInput
+) {
+  storePostSupervisingPharmacist(input: $input) {
+    firstName
+    lastName
+    idpUserId
+    licenceProvince
+    licenceNumber
+    state
+    provincialProvider {
+      identifier {
+        value
+      }
+      providerRole {
+        code
+      }
+    }
+  }
+}

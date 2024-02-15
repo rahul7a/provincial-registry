@@ -1,0 +1,240 @@
+package rules
+
+import com.lblw.vphx.phms.rules.model.DroolsEngineResponseValidation;
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "Provider Default"
+    salience -1
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER");
+        operationOutcome: OperationOutcome(issues.isEmpty(), operationOutcome.status == null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("ERROR")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "PROVIDER SUCCESS"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == null,
+    	acknowledgementDetailsCode == null);
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        update(operationOutcome)
+    end
+
+rule "Missing / wrong jurisdiction  code parameter"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "W",
+        acknowledgementDetailsCode == "PRS.PRV.QRY.PRM.1.0.2201");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("PR-001")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Creation Date Time invalid"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "W",
+        acknowledgementDetailsCode == "GRS.PRV.UNK.UNK.1.0.9998");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.009")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Wrong date of birth format"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "PRS.UNK.UNK.UNK.1.0.2202");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.005")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "No provider records found"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "W",
+        acknowledgementDetailsCode == "PRS.PRV.QRY.UNK.1.0.2101");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.001")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Too many provider records found"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "W",
+        acknowledgementDetailsCode == "PRS.PRP.UNK.UNK.1.1.2303");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.002")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Internal Error in Provider Registry"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "PROVIDER",
+    	acknowledgementCode == "AA",
+    	acknowledgementDetailsTypeCode == "E",
+        acknowledgementDetailsCode == "GRS.PRV.UNK.UNK.1.0.9995");
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("PR-002")
+                        .build());
+        update(operationOutcome)
+    end

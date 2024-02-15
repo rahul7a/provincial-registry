@@ -1,0 +1,13 @@
+{
+  "data": {
+    "storePostSupervisingPharmacist": {
+      "firstName": null,
+      "lastName": null,
+      "idpUserId": null,
+      "licenceProvince": null,
+      "licenceNumber": null,
+      "state": null,
+      "provincialProvider": null
+    }
+  }
+}

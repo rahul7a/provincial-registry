@@ -1,0 +1,15 @@
+{
+  "data": {
+    "storeGetDefaultPharmacist": {
+      "firstName": "account6162",
+      "lastName": "new1662",
+      "idpUserId": "12106a08-dab7-4be5-a836-ece43873e727",
+      "licenceNumber": "321",
+      "licenceProvince": "QC",
+      "provincialProvider": {
+        "mainPlaceIndicator": "mainPlaceIndicator"
+      },
+      "state": "ACTIVE"
+    }
+  }
+}

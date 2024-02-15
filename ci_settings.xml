@@ -1,0 +1,108 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+
+    <!--
+      Configure credentials to Loblaw Nexus Repository.
+    -->
+    <servers>
+        <server>
+            <id>gitlab-maven</id>
+            <configuration>
+                <httpHeaders>
+                    <property>
+                        <name>Job-Token</name>
+                        <value>CI_JOB_TOKEN</value>
+                    </property>
+                </httpHeaders>
+            </configuration>
+        </server>
+        <server>
+            <id>gitlab-maven-snapshot</id>
+            <configuration>
+                <httpHeaders>
+                    <property>
+                        <name>Job-Token</name>
+                        <value>CI_JOB_TOKEN</value>
+                    </property>
+                </httpHeaders>
+            </configuration>
+        </server>
+        <!--<server>
+            <id>loblaw-nexus</id>
+            <username>${env.NEXUS_TOKEN_NAME}</username>
+            <password>${env.NEXUS_TOKEN_PASS}</password>
+        </server> -->
+        <!--<server>
+            <id>phms-artifact-registry</id>
+            <configuration>
+                <httpConfiguration>
+                    <get>
+                        <usePreemptive>true</usePreemptive>
+                    </get>
+                    <head>
+                        <usePreemptive>true</usePreemptive>
+                    </head>
+                    <put>
+                        <params>
+                            <property>
+                                <name>http.protocol.expect-continue</name>
+                                <value>false</value>
+                            </property>
+                        </params>
+                    </put>
+                </httpConfiguration>
+            </configuration>
+            <username>_json_key_base64</username>
+            <password>[GeneratedPassword]</password>
+        </server>-->
+    </servers>
+
+    <!--
+      Begin Configuration of Maven Central Loblaw Proxy repository.
+      This, effectively, ensures that all packages being pulled from the Loblaw
+        Nexus repo have been security-scanned by Loblaw!
+    -->
+    <mirrors>
+    </mirrors>
+    <profiles>
+        <profile>
+            <!--Disable snapshots for the built in central repo to direct -->
+            <!--all requests to maven central via the mirror (proxy) -->
+            <id>gar-maven-public</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <repositories>
+                <repository>
+                    <id>artifact-registry</id>
+                    <url>artifactregistry://northamerica-northeast1-maven.pkg.dev/vph-artifacts/vph-common</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>gitlab-maven</id>
+                    <url>https://gitlab.lblw.ca/api/v4/projects/9414/packages/maven</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>gitlab-maven-snapshot</id>
+                    <url>https://gitlab.lblw.ca/api/v4/projects/9413/packages/maven</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <!--
+      End Configuration of Maven Central Loblaw Proxy repository.
+    -->
+
+</settings>

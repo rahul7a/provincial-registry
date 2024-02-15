@@ -1,0 +1,80 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">7d7446b5-dac4-43c3-8b8a-636515153481</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">2ed436f1-77dc-44f6-add9-c2b3bb38a00a</cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">a227df79ae5746d2a80b4133347b1</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRLO_IN202011CAQC_V01 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0"
+                           xmlns="urn:hl7-org:v3">
+      <id root="3b6316e1-280f-4f78-8f44-0f414620f497"/>
+      <creationTime value="20211210143135"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.3.16" extension="PRLO_IN202011CAQC_V01" displayable="true"/>
+      <processingCode code="D"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="senderRoot" extension="senderApplicationId" displayable="true" use="BUS"/>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+          <name>Registre ODS/LDS</name>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AA"/>
+        <targetMessage>
+          <id root="ae2ba7bd-efd8-4e68-982a-a3f359db1269"/>
+        </targetMessage>
+      </acknowledgement>
+      <controlActEvent classCode="CACT" moodCode="EVN">
+        <id root="eventRoot" extension="eventCorrelationId" displayable="true" use="BUS"/>
+        <code code="PRLO_TE202011CA"/>
+        <statusCode code="completed"/>
+        <subjectOf typeCode="SUBJ" contextControlCode="AP">
+          <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+            <code code="NOTFND"/>
+            <text>Recherche infructueuse, aucun LDS ne correspond aux critères spécifiés.</text>
+            <statusCode code="completed"/>
+            <priorityCode code="E"/>
+            <triggerFor xsi:nil="true"/>
+          </detectedIssueEvent>
+        </subjectOf>
+        <queryAck>
+          <queryId root="ae2ba7bd-efd8-4e68-982a-a3f359db1269"/>
+          <queryResponseCode code="NF"/>
+          <resultTotalQuantity value="0"/>
+          <resultCurrentQuantity value="0"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="ae2ba7bd-efd8-4e68-982a-a3f359db1269"/>
+          <parameterList>
+            <address xsi:nil="true"/>
+            <amendedSinceDateTime xsi:nil="true"/>
+            <eHRRepositoryId xsi:nil="true"/>
+            <locationMobileIndicator xsi:nil="true"/>
+            <locationPlaceType xsi:nil="true"/>
+            <nameContains xsi:nil="true"/>
+            <nearAddress xsi:nil="true"/>
+            <responsibleOrganizationId xsi:nil="true"/>
+            <searchRadius xsi:nil="true"/>
+            <OtherIDs>
+              <value root="2.16.124.10.101.1.60.104" extension="2141000" displayable="true"/>
+            </OtherIDs>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRLO_IN202011CAQC_V01>
+  </s:Body>
+</s:Envelope>

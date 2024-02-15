@@ -1,0 +1,51 @@
+package rules
+
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.location.details.request.hl7v3.ProvincialLocationDetailsRequest;
+import com.lblw.vphx.phms.domain.common.request.hl7v3.Request.RequestBuilder;
+import com.lblw.vphx.phms.domain.location.details.request.ProvincialLocationDetailsCriteria;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "when identifier is null or empty return error"
+    when
+    	request: ProvincialLocationDetailsRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialLocationDetailsCriteria(identifier == null || identifier.trim().isEmpty) from $provincialRequestPayload
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                            IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Location Details")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "sucess"
+    when
+    	request: ProvincialLocationDetailsRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialLocationDetailsCriteria(identifier != null && ! identifier.trim().isEmpty()) from $provincialRequestPayload
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        update(operationOutcome)
+    end

@@ -1,0 +1,91 @@
+%TEMPLATE_MODE XML
+# ------------ separator comment -----------
+%NAME Find Location Summary Request
+# ------------------------------------------
+%CONTEXT
+phmsRequest = new com.lblw.vphx.phms.domain.location.request.hl7v3.ProvincialLocationSearchRequest()
+phmsRequest.requestBodyTransmissionWrapper = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestBodyTransmissionWrapper()
+phmsRequest.requestBodyTransmissionWrapper.transmissionUniqueIdentifier = 'ABC123'
+phmsRequest.requestBodyTransmissionWrapper.transmissionCreationDateTime = '2021-08-04T00:00:00'
+phmsRequest.requestBodyTransmissionWrapper.processingCode = 'code'
+phmsRequest.requestBodyTransmissionWrapper.senderRoot = 'sender-root'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationId = 'sender-application-id'
+phmsRequest.requestBodyTransmissionWrapper.senderApplicationName = 'sender-application-name'
+phmsRequest.requestControlAct = new com.lblw.vphx.phms.domain.common.request.hl7v3.RequestControlAct()
+phmsRequest.requestControlAct.eventRoot = 'event-root'
+phmsRequest.requestControlAct.eventCorrelationId = 'event-ext'
+phmsRequest.provincialRequestPayload = new com.lblw.vphx.phms.domain.location.request.ProvincialLocationSearchCriteria()
+phmsRequest.provincialRequestPayload.locationName = 'locationName'
+phmsRequest.provincialRequestPayload.locationType = 'LAB'
+phmsRequest.provincialRequestPayload.provincialLocationIdentifierType = PERMIT_NUMBER
+phmsRequest.provincialRequestPayload.provincialLocationIdentifierValue = 'value'
+phmsRequest.provincialRequestPayload.locationRequestAddress = new com.lblw.vphx.phms.domain.location.request.LocationRequestAddress()
+phmsRequest.provincialRequestPayload.locationRequestAddress.streetAddressLine = 'Highbuery'
+phmsRequest.provincialRequestPayload.locationRequestAddress.country = 'CA'
+phmsRequest.provincialRequestPayload.locationRequestAddress.city = 'Montreal'
+phmsRequest.provincialRequestPayload.locationRequestAddress.postalCode = 'HBE 123'
+locationSummaryIdRoot = '2.16.124.10.101.1.60.104'
+locationSummaryIdExtension = '890'
+provincialLocationType=  'LABORATORY'
+# ------------------------------------------
+%MESSAGES
+# ------------------------------------------
+%INPUT (file:src/main/resources/templates/qc/LOCATION_SEARCH-request.xml)
+# ------------------------------------------
+%OUTPUT
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:hl7-org:v3">
+  <soapenv:Header>
+    <Security xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wsswssecurity-secext-1.0.xsd" soapenv:actor="IntervenantEmetteur"/>
+  </soapenv:Header>
+  <soapenv:Body Id="_0">
+	<PRLO_IN202010CAQC_V01 xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      ITSVersion="XML_1.0">
+	  <id root="ABC123"/>
+      <creationTime value="2021-08-04T00:00:00"/>
+	  <responseModeCode code="I"/>
+	  <versionCode code="NE2006"/>
+	  <interactionId displayable="true" extension="PRLO_IN202010CAQC_V01" root="2.16.124.10.101.1.60.3.15"/>
+	  <processingCode code="code"/>
+	  <processingModeCode code="T"/>
+	  <acceptAckCode code="AL"/>
+	  <receiver typeCode="RCV">
+		<device classCode="DEV" determinerCode="INSTANCE">
+		  <id displayable="true" extension="ODS" root="2.16.124.10.101.1.60.2.11" use="BUS"/>
+		</device>
+	  </receiver>
+	  <sender typeCode="SND">
+		<device classCode="DEV" determinerCode="INSTANCE">
+		  <id displayable="true" extension="sender-application-id" root="sender-root" use="BUS"/>
+			<name mediaType="text/plain" representation="TXT">sender-application-name</name>
+		</device>
+	  </sender>
+	  <controlActEvent classCode="CACT" moodCode="EVN">
+		<id displayable="true" extension="event-ext" root="event-root" use="BUS"/>
+		<code code="PRLO_TE202010CA"/>
+		<statusCode code="completed"/>
+		<queryByParameter>
+	      <queryId root="ABC123"/>
+		  <parameterList>
+			<address>
+			  <value>
+				<streetAddressLine mediaType="text/plain" partType="SAL" representation="TXT">Highbuery</streetAddressLine>
+				<city mediaType="text/plain" partType="CTY" representation="TXT">Montreal</city>
+				<postalCode mediaType="text/plain" partType="ZIP" representation="TXT">HBE 123</postalCode>
+				<country mediaType="text/plain" partType="CNT" representation="TXT">CA</country>
+			  </value>
+			</address>
+			<nameContains>
+		      <value>locationName</value>
+			</nameContains>
+			<recordType>
+              <value code="LABORATORY"/>
+            </recordType>
+			<OtherIDs>
+		      <value root="2.16.124.10.101.1.60.104" extension="890" displayable="true"/>
+			</OtherIDs>
+		  </parameterList>
+		</queryByParameter>
+	  </controlActEvent>
+	</PRLO_IN202010CAQC_V01>
+  </soapenv:Body>
+</soapenv:Envelope>

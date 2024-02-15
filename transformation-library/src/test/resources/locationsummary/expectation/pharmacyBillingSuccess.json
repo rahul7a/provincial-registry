@@ -1,0 +1,61 @@
+{
+  "responseHeader": {
+    "transactionId": "841f8bb9-f780-4dd7-87c6-2b970d880e5b",
+    "sessionId": "5c34fac4fcaf456aa9c1ae3e65c33",
+    "trackingId": "e85d12bc-fdbc-4432-a72c-7e6b3f5ed310"
+  },
+  "responseBodyTransmissionWrapper": {
+    "transmissionUniqueIdentifier": "1be75dcd-64ac-4665-a0b8-c17f4f5296c4",
+    "acknowledgeTypeCode": "AA"
+  },
+  "queryAcknowledgement": {
+    "queryResponseCode": "OK",
+    "resultCurrentQuantity": "1",
+    "resultTotalQuantity": "1",
+    "resultRemainingQuantity": "0"
+  },
+  "detectedIssues": null,
+  "responseControlAct": {
+    "eventRoot": "eventRoot",
+    "eventCorrelationId": "eventCorrelationId",
+    "provincialLocationSearchCriteria": {
+      "locationName": null,
+      "provincialLocationIdentifierValue": "255919",
+      "locationType": null,
+      "provincialLocationIdentifierType": "PHARMACY_BILLING_NUMBER",
+      "locationRequestAddress": {
+        "streetAddressLine": null,
+        "postalCode": null,
+        "city": null
+      }
+    }
+  },
+  "provincialResponsePayload": {
+    "provincialLocations": [
+      {
+        "name": "JEAN COUTU PHARMACIE MARC POTVIN",
+        "locationType": {
+          "code": "LAB"
+        },
+        "region": "12",
+        "address": {
+          "streetAddressLine1": "6605 BOUL DE LA RIVE-SUD S",
+          "streetAddressLine2": "LEVIS, QC",
+          "postalCode": "G6V9H5",
+          "city": "LEVIS",
+          "country": null
+        },
+        "telecom": {},
+        "identifier": {
+          "value": "1000002848",
+          "assigner": "Qc",
+          "system": "NIU-O",
+          "type": "LOCATION"
+        },
+        "permit": null,
+        "publicHealthInsurancePermit": null,
+        "pharmacyBilling": null
+      }
+    ]
+  }
+}

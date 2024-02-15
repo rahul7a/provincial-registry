@@ -1,0 +1,343 @@
+package rules
+
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.provider.request.hl7v3.ProvincialProviderSearchRequest;
+import com.lblw.vphx.phms.domain.common.request.hl7v3.Request.RequestBuilder;
+import com.lblw.vphx.phms.domain.provider.request.ProvincialProviderSearchCriteria;
+import com.lblw.vphx.phms.domain.provider.request.ProviderIdentifierType;
+import com.lblw.vphx.phms.rules.service.CodeableConceptValidationService;
+import static org.drools.core.util.StringUtils.isEmpty;
+import com.lblw.vphx.phms.domain.common.request.ProvincialRequestControl;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+global CodeableConceptValidationService codeableConceptValidationService
+
+rule "Provider Request Default"
+    when
+    	request: ProvincialProviderSearchRequest()
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please enter mandatory field: ProviderDetails.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "When licensingProvince is not QC"
+     when
+         request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+         provincialRequestPayload: ProvincialProviderSearchCriteria(
+           $licensingProvince : licensingProvince,
+           $provincialRequestControl: provincialRequestControl
+         ) from $provincialRequestPayload;
+         provincialRequestControl: ProvincialRequestControl($province: province) from $provincialRequestControl;
+         eval(isEmpty($licensingProvince) || ($licensingProvince == null) || !("QC".equals($licensingProvince)))
+         operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.229")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please select Licensing Province as 'QC' for provincial search.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "When providerIdentifierType is License, providerIdentifierValue or roleCode  is missing"
+    when
+    	request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        $providerIdentifierType : providerIdentifierType,
+        $providerIdentifierValue : providerIdentifierValue,
+        $roleCode : roleCode,
+        $licensingProvince: licensingProvince)
+        from $provincialRequestPayload
+        eval("QC".equals($licensingProvince) && $providerIdentifierType == ProviderIdentifierType.LICENSE  &&
+        (isEmpty($providerIdentifierValue) ||
+        isEmpty($roleCode)))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please enter mandatory field: if providerIdentifierType=LICENSE provide ProviderIdentifierValue, RoleCode.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "LastName/RoleCode is missing"
+    when
+    	request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        $roleCode : roleCode,
+        $lastName : lastName,
+        ("QC".equals(licensingProvince)))
+        from $provincialRequestPayload
+        eval((isEmpty($roleCode) && !isEmpty($lastName)) ||
+        (isEmpty($lastName) && !isEmpty($roleCode)))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please enter mandatory field: LastName or RoleCode.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "providerIdentifierType/providerIdentifierValue is missing"
+    when
+    	request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        $providerIdentifierType : providerIdentifierType,
+        $providerIdentifierValue : providerIdentifierValue,
+        $licensingProvince : licensingProvince)
+        from $provincialRequestPayload
+        eval("QC".equals($licensingProvince) && (($providerIdentifierType != null && isEmpty($providerIdentifierValue)) ||
+        ($providerIdentifierType == null && !isEmpty($providerIdentifierValue))))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please enter mandatory field: ProviderIdentifierType or ProviderIdentifierValue.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Firstname/Lastname is missing"
+    when
+    	request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        $firstName : firstName,
+        $lastName : lastName)
+        from $provincialRequestPayload
+        eval((isEmpty($firstName) && !isEmpty($lastName)) && ($firstName != null) && ($lastName != null) ||
+        (isEmpty($lastName) && !isEmpty($firstName) && ($firstName != null) && ($lastName != null)))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please enter mandatory field: FirstName or LastName.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "when provider minimum search criteria is received/provided, mark it as valid"
+    no-loop true
+    when
+    	request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        $firstName : firstName,
+        $lastName : lastName,
+        $licensingProvince : licensingProvince,
+        $providerIdentifierType : providerIdentifierType,
+        $providerIdentifierValue : providerIdentifierValue,
+        $roleCode : roleCode,
+        $roleSpecialityCode : roleSpecialityCode)
+        from $provincialRequestPayload
+        eval((!isEmpty($firstName) && !isEmpty($lastName)  && ("QC".equals($licensingProvince)))||
+        (($providerIdentifierType == ProviderIdentifierType.LICENSE)  && !isEmpty($providerIdentifierValue) && !isEmpty($roleCode) && ("QC".equals($licensingProvince))) ||
+        (($providerIdentifierType != ProviderIdentifierType.LICENSE  && $providerIdentifierType !=null)  && !isEmpty($providerIdentifierValue) && ("QC".equals($licensingProvince))) ||
+        (!isEmpty($lastName) && !isEmpty($roleCode) && ("QC".equals($licensingProvince))))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        update(operationOutcome)
+    end
+
+rule "Given system role speciality code is INVALID"
+    when
+        request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+          roleSpecialityCode != null,
+          ("QC".equals(licensingProvince)),
+          $systemroleSpecialityCode: roleSpecialityCode,
+          $provincialRequestControl: provincialRequestControl
+        ) from $provincialRequestPayload;
+        provincialRequestControl: ProvincialRequestControl($province: province) from $provincialRequestControl;
+        eval(!codeableConceptValidationService.isSystemRoleSpecialityCodeValid($province, $systemroleSpecialityCode))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.173")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("The code used is not a valid code roleSpecialityCode. Please use a valid code and try again.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Given system role code is INVALID"
+    when
+        request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+          roleCode != null,
+          ("QC".equals(licensingProvince)),
+          $systemroleCode: roleCode,
+          $provincialRequestControl: provincialRequestControl
+        ) from $provincialRequestPayload;
+        provincialRequestControl: ProvincialRequestControl($province: province) from $provincialRequestControl;
+        eval(!codeableConceptValidationService.isSystemRoleCodeValid($province, $systemroleCode))
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.173")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("The code used is not a valid code roleCode. Please use a valid code and try again.")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Given providerIdentifierValue and Roled Code is not provided"
+    when
+        request: ProvincialProviderSearchRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialProviderSearchCriteria(
+        providerIdentifierType == ProviderIdentifierType.LICENSE,
+        providerIdentifierValue !=null,
+        "QC".equals(licensingProvince),
+        isEmpty(roleCode))
+        from $provincialRequestPayload;
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.getIssues().clear();
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.227")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Please select the valid Prescriber Type associated with the License Number and try again.")
+                        .build());
+        update(operationOutcome)
+    end

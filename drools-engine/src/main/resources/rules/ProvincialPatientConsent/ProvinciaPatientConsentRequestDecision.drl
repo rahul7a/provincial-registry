@@ -1,0 +1,62 @@
+package rules
+
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.patient.consent.request.hl7v3.ProvincialPatientConsentRequest;
+import com.lblw.vphx.phms.domain.common.request.hl7v3.Request.RequestBuilder;
+import com.lblw.vphx.phms.domain.patient.consent.request.ProvincialPatientConsentCriteria;
+import com.lblw.vphx.phms.domain.common.request.ProvincialRequest;
+import static org.drools.core.util.StringUtils.isEmpty;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "when patient consent details are missing"
+    when
+    	request: ProvincialPatientConsentRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialPatientConsentCriteria(
+        firstName == null || isEmpty(firstName) == true ||
+        lastName==null || isEmpty(lastName)==true ||
+        patientIdentifier==null || isEmpty(patientIdentifier)==true ||
+        effectiveDateTime==null || isEmpty(effectiveDateTime)==true)
+        from $provincialRequestPayload;
+        operationOutcome: OperationOutcome(issues.isEmpty())
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.112")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                        IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(
+                        IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("Patient Details")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "when recieved all other patient consent details"
+    when
+    	request: ProvincialPatientConsentRequest($provincialRequestPayload: provincialRequestPayload)
+        provincialRequestPayload: ProvincialPatientConsentCriteria(
+        firstName != null && ! isEmpty(firstName) == true &&
+        lastName != null && ! isEmpty(lastName) == true &&
+        patientIdentifier != null && ! isEmpty(patientIdentifier) == true &&
+        effectiveDateTime != null && ! isEmpty(effectiveDateTime)==true)
+        from $provincialRequestPayload;
+        operationOutcome: OperationOutcome()
+    then
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        update(operationOutcome)
+    end

@@ -1,0 +1,25 @@
+deployment:
+  replicaCount: 1
+  minReadySeconds: 10
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # Maximum number of Pods that can be created over the desired number of Pods
+      maxSurge: 2
+      # Maximum number of Pods that can be unavailable during the update process
+      # One new pod will be deployed, and older one will be removed only if the deployment was successful.
+      # A downside is Cluster will need spare capacity to temporarily run this extra replica, so if Cluster already close to capacity an extra node will be added
+      maxUnavailable: 0
+
+  image: northamerica-northeast1-docker.pkg.dev/vph-artifacts/vph-phms/phms-provincial-registry-service
+  imagePullSecrets:
+    name: gar-registry
+  app: vph-phms-provincial-registry-service
+
+istio:
+  dnsPrefix: "vph-lwr"
+  namespace: vph-common-lwr
+  gateway: vph-lwr-istio-gateway-ingress
+
+envMap:

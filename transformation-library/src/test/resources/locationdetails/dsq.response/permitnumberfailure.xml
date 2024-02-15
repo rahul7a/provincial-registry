@@ -1,0 +1,68 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">c7fb6442-6362-4ea6-9e7c-d54888313171</cais:TrackingId>
+    <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">45007f65-6527-4755-b4c4-91b196eb4900</cais:TransactionId>
+    <cais:SessionID xmlns:cais="http://cais-icp.org/v1">a3b70b5001ec4905bdd42ed31473f</cais:SessionID>
+  </s:Header>
+  <s:Body>
+    <PRLO_IN202013CAQC_V01 ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <id root="7f518190-b4b5-4722-b9a6-436e36a6917c"/>
+      <creationTime value="20211217154035"/>
+      <responseModeCode code="I"/>
+      <versionCode code="NE2006"/>
+      <interactionId root="2.16.124.10.101.1.60.3.18" extension="PRLO_IN202013CAQC_V01" displayable="true"/>
+      <processingCode code="phms"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="AL"/>
+      <receiver typeCode="RCV">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="senderRoot" extension="senderApplicationId" displayable="true" use="BUS"/>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </receiver>
+      <respondTo xsi:nil="true"/>
+      <sender typeCode="SND">
+        <device classCode="DEV" determinerCode="INSTANCE">
+          <id root="2.16.124.10.101.1.60.2.11" extension="ODS" displayable="true" use="BUS"/>
+          <name>Registre ODS/LDS</name>
+          <asAgent xsi:nil="true"/>
+          <asLocatedEntity xsi:nil="true"/>
+        </device>
+      </sender>
+      <acknowledgement>
+        <typeCode code="AE"/>
+        <targetMessage>
+          <id root="34d52bcb-f1f3-4304-b9ab-5cb123ac93f5"/>
+        </targetMessage>
+        <acknowledgementDetail>
+          <typeCode code="E"/>
+          <code code="SYN102"/>
+          <text>Data type error</text>
+          <location>PRLO_IN202012CAQC_V01/controlActEvent/queryByParameter/parameterList/recordId/value</location>
+        </acknowledgementDetail>
+      </acknowledgement>
+      <controlActEvent classCode="CACT" moodCode="EVN">
+        <id root="eventRoot" extension="eventCorrelationId" displayable="true" use="BUS"/>
+        <code code="PRLO_TE202013CA"/>
+        <statusCode code="completed"/>
+        <queryAck>
+          <queryId root="34d52bcb-f1f3-4304-b9ab-5cb123ac93f5"/>
+          <queryResponseCode code="QE"/>
+          <resultTotalQuantity value="0"/>
+          <resultCurrentQuantity value="0"/>
+          <resultRemainingQuantity value="0"/>
+        </queryAck>
+        <queryByParameter>
+          <queryId root="34d52bcb-f1f3-4304-b9ab-5cb123ac93f5"/>
+          <parameterList>
+            <recordId>
+              <value root="2.16.840.1.113883.4.273" extension="600000180988" displayable="true"/>
+            </recordId>
+          </parameterList>
+        </queryByParameter>
+      </controlActEvent>
+    </PRLO_IN202013CAQC_V01>
+  </s:Body>
+</s:Envelope>

@@ -1,0 +1,238 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <cais:TrackingId xmlns:cais="http://cais-icp.org/v1">4b1525b2-2835-4ae1-8e88-0af4f72a6c04</cais:TrackingId>
+        <cais:TransactionId xmlns:cais="http://cais-icp.org/v1">709350cc-be07-4a37-a110-173d7b15c3db
+        </cais:TransactionId>
+        <cais:SessionID xmlns:cais="http://cais-icp.org/v1">7a28a8f0aade4e0b9d00f1234387b</cais:SessionID>
+    </s:Header>
+    <s:Body>
+        <PRPM_IN306011CA ITSVersion="XML_1.0" xmlns="urn:hl7-org:v3"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <id root="44d3862e-4075-4157-a1b4-4a10ed103c93"/>
+            <creationTime value="20211123153226"/>
+            <securityText/>
+            <responseModeCode code="IMMEDIATE"/>
+            <versionCode code="V3PR2"/>
+            <interactionId root="2.16.840.1.113883.3.40.1.15" extension="PRPM_IN306011CA"/>
+            <profileId root="2.16.840.1.113883.3.40.1.7" extension="unknown"/>
+            <processingCode code="DEV"/>
+            <processingModeCode code="T"/>
+            <acceptAckCode code="NE"/>
+            <receiver typeCode="RCV">
+                <telecom value=""/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="VPHX" extension="ApplicationID" use="BUS"/>
+                </device>
+            </receiver>
+            <respondTo xsi:nil="true"/>
+            <sender typeCode="SND">
+                <telecom value=""/>
+                <device classCode="DEV" determinerCode="INSTANCE">
+                    <id root="2.16.124.10.101.1.60.2.14" extension="RI"/>
+                    <name>Registre des intervenants</name>
+                </device>
+            </sender>
+            <acknowledgement>
+                <typeCode code="AA"/>
+                <messageWaitingNumber value="0"/>
+                <targetMessage>
+                    <id root="020d4b66-82bb-4e73-a15a-0024e904b5d2"/>
+                </targetMessage>
+            </acknowledgement>
+            <controlActEvent classCode="CACT" moodCode="EVN">
+                <id root="2.16.840.1.113883.3.40.1.9" extension=""/>
+                <code code="PRPM_IN306011CA"/>
+                <statusCode code="SUCCESS"/>
+                <effectiveTime nullFlavor="UNK">
+                    <low/>
+                </effectiveTime>
+                <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+                    <registrationRequest classCode="REG" moodCode="EVN">
+                        <statusCode code="Active"/>
+                        <subject typeCode="SBJ" contextControlCode="AN">
+                            <healthCareProvider classCode="PROV">
+                                <id root="2.16.840.1.113883.4.277" extension="CPN.01002002.QC.PRS"/>
+                                <id root="2.16.840.1.113883.4.302" extension="03101"/>
+                                <id root="2.16.124.10.101.1.60.105" extension="203101"/>
+                                <code code="DEN" codeSystem="2.16.840.1.113883.3.40.10.3"/>
+                                <statusCode code="ACTIVE" codeSystem="2.16.840.1.113883.3.40.10.10"/>
+                                <effectiveTime>
+                                    <low value="20210629000000"/>
+                                </effectiveTime>
+                                <healthCarePrincipalPerson classCode="PSN" determinerCode="INSTANCE">
+                                    <name use="L">
+                                        <family>Adams</family>
+                                        <given>Florence</given>
+                                        <given/>
+                                        <given/>
+                                        <suffix/>
+                                        <prefix/>
+                                    </name>
+                                    <administrativeGenderCode code="F"/>
+                                    <birthplace classCode="BIRTHPL">
+                                        <addr>
+                                            <state/>
+                                            <country/>
+                                        </addr>
+                                    </birthplace>
+                                </healthCarePrincipalPerson>
+                                <issuingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <name>RAMQ</name>
+                                    <territorialAuthority classCode="TERR">
+                                        <code code="Province"/>
+                                        <territory classCode="PLC" determinerCode="INSTANCE">
+                                            <code code="QC"/>
+                                        </territory>
+                                    </territorialAuthority>
+                                </issuingOrganization>
+                            </healthCareProvider>
+                        </subject>
+                        <custodian typeCode="CST" contextControlCode="AP">
+                            <assignedDevice classCode="ASSIGNED">
+                                <id root="2.16.840.1.113883.3.40.4.2" extension="moh.hnet.bc.ca"/>
+                                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                                    <name>QCClient</name>
+                                </assignedRepository>
+                                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                                    <name/>
+                                </representedRepositoryJurisdiction>
+                            </assignedDevice>
+                        </custodian>
+                    </registrationRequest>
+                </subject>
+                <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+                    <registrationRequest classCode="REG" moodCode="EVN">
+                        <statusCode code="Active"/>
+                        <subject typeCode="SBJ" contextControlCode="AN">
+                            <healthCareProvider classCode="PROV">
+                                <id root="2.16.840.1.113883.4.277" extension="CPN.01002002.QC.PRS"/>
+                                <id root="2.16.840.1.113883.4.299" extension="211019"/>
+                                <id root="2.16.124.10.101.1.60.105" extension="411019"/>
+                                <code code="PHARM" codeSystem="2.16.840.1.113883.3.40.10.3"/>
+                                <statusCode code="ACTIVE" codeSystem="2.16.840.1.113883.3.40.10.10"/>
+                                <effectiveTime>
+                                    <low value="20211019000000"/>
+                                </effectiveTime>
+                                <healthCarePrincipalPerson classCode="PSN" determinerCode="INSTANCE">
+                                    <name use="L">
+                                        <family>Adams</family>
+                                        <given>Florence</given>
+                                        <given/>
+                                        <given/>
+                                        <suffix/>
+                                        <prefix/>
+                                    </name>
+                                    <administrativeGenderCode code="F"/>
+                                    <birthplace classCode="BIRTHPL">
+                                        <addr>
+                                            <state/>
+                                            <country/>
+                                        </addr>
+                                    </birthplace>
+                                </healthCarePrincipalPerson>
+                                <issuingOrganization classCode="ORG" determinerCode="INSTANCE">
+                                    <name>RAMQ</name>
+                                    <territorialAuthority classCode="TERR">
+                                        <code code="Province"/>
+                                        <territory classCode="PLC" determinerCode="INSTANCE">
+                                            <code code="QC"/>
+                                        </territory>
+                                    </territorialAuthority>
+                                </issuingOrganization>
+                                <relatedTo typeCode="REL">
+                                    <assignedEntity classCode="ASSIGNED">
+                                        <code/>
+                                        <assignedPrincipalPerson xsi:nil="true"/>
+                                        <representedOrganization xsi:nil="true"/>
+                                        <performance typeCode="PPRF">
+                                            <actDefinitionOrEvent classCode="ACT" moodCode="PERM">
+                                                <location typeCode="LOC">
+                                                    <sequenceNumber value="1"/>
+                                                    <serviceDeliveryLocation classCode="SDLOC">
+                                                        <id root="2.16.840.1.113883.4.273" extension="1000015741"/>
+                                                        <code code="LDS" codeSystem="2.16.840.1.113883.3.40.10.5"/>
+                                                        <telecom value="4189991234" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <telecom value="fax:4188881234" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <telecom value="fax:4188881234" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <telecom value="4189991234" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <telecom value="adams.florence@hotmail.com" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <telecom value="adams.florence@hotmail.com" use="WP">
+                                                            <useablePeriod xsi:type="IVL_TS">
+                                                                <low value="20211001000000"/>
+                                                            </useablePeriod>
+                                                        </telecom>
+                                                        <effectiveTime>
+                                                            <low value="20211001000000"/>
+                                                        </effectiveTime>
+                                                        <location classCode="PLC" determinerCode="INSTANCE">
+                                                            <name>HOPITAL DE CHANDLER</name>
+                                                        </location>
+                                                    </serviceDeliveryLocation>
+                                                </location>
+                                            </actDefinitionOrEvent>
+                                        </performance>
+                                    </assignedEntity>
+                                </relatedTo>
+                            </healthCareProvider>
+                        </subject>
+                        <custodian typeCode="CST" contextControlCode="AP">
+                            <assignedDevice classCode="ASSIGNED">
+                                <id root="2.16.840.1.113883.3.40.4.2" extension="moh.hnet.bc.ca"/>
+                                <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                                    <name>QCClient</name>
+                                </assignedRepository>
+                                <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                                    <name/>
+                                </representedRepositoryJurisdiction>
+                            </assignedDevice>
+                        </custodian>
+                    </registrationRequest>
+                </subject>
+                <parameterList>
+                    <administrativeGender>
+                        <value code="F"/>
+                    </administrativeGender>
+                    <confidence xsi:nil="true"/>
+                    <dOB xsi:nil="true"/>
+                    <includeHistoryIndicator>
+                        <value value="false"/>
+                    </includeHistoryIndicator>
+                    <jurisdiction>
+                        <value code="QC"/>
+                    </jurisdiction>
+                    <name>
+                        <value use="L">
+                            <family>Adams</family>
+                            <given>Florence</given>
+                        </value>
+                    </name>
+                    <providerID>
+                        <value root="2.16.840.1.113883.4.272" extension="1111111111"/>
+                    </providerID>
+                    <roleEffectiveDate xsi:nil="true"/>
+                    <routedDocType xsi:nil="true"/>
+                </parameterList>
+            </controlActEvent>
+        </PRPM_IN306011CA>
+    </s:Body>
+</s:Envelope>

@@ -1,0 +1,150 @@
+package rules
+
+import com.lblw.vphx.phms.rules.model.DroolsEngineResponseValidation;
+import com.lblw.vphx.phms.domain.common.Province;
+import com.lblw.vphx.phms.rules.service.DroolsEngineService
+import org.drools.core.util.StringUtils;
+import com.lblw.vphx.phms.domain.common.response.*;
+import com.lblw.vphx.phms.domain.common.response.hl7v3.DetectedIssue;
+import com.lblw.vphx.phms.domain.common.Service;
+import org.apache.logging.log4j.util.Strings;
+import java.util.ArrayList;
+
+rule "LOCATION DETAILS Default"
+    salience -1
+    no-loop true
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "LOCATION DETAILS");
+        operationOutcome: OperationOutcome(issues.isEmpty(), status == null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.getIssues().clear();
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                            IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                        .details("ERROR")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "LOCATION DETAILS SUCCESS"
+    no-loop true
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "LOCATION DETAILS",
+    	acknowledgementCode == "AA",
+        acknowledgementDetailsCode == null,
+        queryResponseCode == "OK",
+        detectedIssues.isEmpty());
+        operationOutcome: OperationOutcome(issues.isEmpty(), status == null)
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.ACCEPT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        update(operationOutcome)
+    end
+
+rule "Missing Mandatory Parameter"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "LOCATION DETAILS",
+    	acknowledgementCode == "AA",
+        queryResponseCode == 'QE');
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "MISSMAND", eventText == "Paramètre obligatoire manquant.") from response.detectedIssues
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.075")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                            IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                         .details("LD-013")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Data Not Found"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "LOCATION DETAILS",
+    	acknowledgementCode == "AA",
+        queryResponseCode == 'NF');
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventCode == "KEY204", eventText == "Aucun LDS ne correspond à ce NIU.") from response.detectedIssues
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.108")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                            IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                         .details("")
+                        .build());
+        update(operationOutcome)
+    end
+
+rule "Internal Error in Location Details"
+    when
+    	response: DroolsEngineResponseValidation(
+    	province == Province.QC,
+    	identifierType == "LOCATION DETAILS",
+    	acknowledgementCode == "AR",
+        acknowledgementDetailsCode == "INTERR",
+        acknowledgementDetailsTypeCode == "E",
+        queryResponseCode == 'AE');
+        operationOutcome: OperationOutcome()
+        DetectedIssue(eventText == "Erreur d'application, la requête n'a pas été executée") from response.detectedIssues
+    then
+        operationOutcome.setStatus(ResponseStatus.builder().code(Status.REJECT).text(Strings.EMPTY).build());
+        operationOutcome.setClassification(ResponseClassification.SYSTEM);
+        operationOutcome
+                .getIssues()
+                .add(
+                    Issue.builder()
+                        .code("EM.046")
+                        .classification(ResponseClassification.SYSTEM)
+                        .priority(
+                            IssuePriority.builder().code(Priority.ERROR).text(Strings.EMPTY).build())
+                        .severity(IssueSeverity.builder().code(Severity.HIGH).text(Strings.EMPTY).build())
+                        .source(IssueSource.builder().code(Source.INTERNAL).text(Strings.EMPTY).build())
+                        .description("")
+                        .triggeredBy(
+                        Service.builder().code(ServiceCode.VPHX_PHMS).serviceOutageStatus("").build())
+                         .details("LD-013")
+                        .build());
+        update(operationOutcome)
+    end
